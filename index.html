@@ -121,7 +121,18 @@
     let state = (() => {
       try {
         const s = localStorage.getItem(STORAGE_KEY);
-        if (s) return JSON.parse(s);
+        if (s) {
+          const parsed = JSON.parse(s);
+          if (parsed && Array.isArray(parsed.items) && parsed.items.length > 0) {
+            return {
+              ...DEFAULT_DATA,
+              ...parsed,
+              categories: (Array.isArray(parsed.categories) && parsed.categories.length > 0) ? parsed.categories : DEFAULT_DATA.categories,
+              zones: (Array.isArray(parsed.zones) && parsed.zones.length > 0) ? parsed.zones : DEFAULT_DATA.zones,
+              settings: { ...DEFAULT_DATA.settings, ...(parsed.settings || {}) }
+            };
+          }
+        }
       } catch (e) {}
       return JSON.parse(JSON.stringify(DEFAULT_DATA));
     })();
@@ -131,8 +142,31 @@
     let cart = [];
 
     window.applyRemoteMenuData = function(remote) {
-      if (!remote || !remote.items) return;
-      state = { ...state, ...remote };
+      if (!remote || typeof remote !== "object") return;
+      const mergedItems = (Array.isArray(remote.items) && remote.items.length > 0)
+        ? remote.items
+        : ((Array.isArray(state.items) && state.items.length > 0) ? state.items : DEFAULT_DATA.items);
+      const mergedCats = (Array.isArray(remote.categories) && remote.categories.length > 0)
+        ? remote.categories
+        : ((Array.isArray(state.categories) && state.categories.length > 0) ? state.categories : DEFAULT_DATA.categories);
+      const mergedZones = (Array.isArray(remote.zones) && remote.zones.length > 0)
+        ? remote.zones
+        : ((Array.isArray(state.zones) && state.zones.length > 0) ? state.zones : DEFAULT_DATA.zones);
+      const mergedSettings = {
+        ...DEFAULT_DATA.settings,
+        ...(state.settings || {}),
+        ...(remote.settings || {})
+      };
+
+      state = {
+        ...DEFAULT_DATA,
+        ...state,
+        ...remote,
+        items: mergedItems,
+        categories: mergedCats,
+        zones: mergedZones,
+        settings: mergedSettings
+      };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       renderMenu();
     };
