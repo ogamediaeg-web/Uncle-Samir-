@@ -1,5 +1,4 @@
 const STORAGE_KEY = "uncle_samir_menu_v1";
-const AUTH_KEY = "uncle_samir_admin_logged";
 
 let state = loadState();
 let currentLang = "ar";
@@ -47,14 +46,6 @@ window.onInitialCloudLoad = function(remoteData) {
   renderMenu();
   renderBranches();
   renderCartUI();
-  if (isAdminLoggedIn() && !document.getElementById("dashboard-modal").classList.contains("hidden")) {
-    renderDashItems();
-    renderDashCategories();
-    renderDashZones();
-    renderDashBranches();
-    renderDashOrders();
-    loadSettingsToDash();
-  }
   isApplyingRemote = false;
 };
 
@@ -85,7 +76,6 @@ function applyLanguage(lang) {
     if (dict[key]) el.placeholder = dict[key];
   });
 
-  updateAdminButtonLabel();
   renderBanners();
   renderCategories();
   renderMenu();
@@ -199,7 +189,7 @@ function renderProductCard(item, dict) {
     <article class="product-card ${item.available ? '' : 'sold-out'}">
       ${!item.available ? `<span class="sold-out-badge">${dict.soldOut}</span>` : ""}
       <div class="product-img-wrap">
-        <img src="${item.img || 'images/savory_feteer.jpg'}" alt="${title}" loading="lazy" />
+        <img src="${item.img || 'savory_feteer.jpg'}" alt="${title}" loading="lazy" />
       </div>
       <div class="product-info">
         <div>
@@ -238,7 +228,7 @@ function openProductModal(item) {
   modalQty = 1;
   const dict = I18N[currentLang];
 
-  document.getElementById("modal-item-img").src = item.img || "images/savory_feteer.jpg";
+  document.getElementById("modal-item-img").src = item.img || "savory_feteer.jpg";
   document.getElementById("modal-item-name").textContent = item[currentLang] || item.ar;
   document.getElementById("modal-item-desc").textContent = currentLang === "ar" ? (item.descAr || "") : (item.descEn || item.descAr || "");
   document.getElementById("modal-item-note").value = "";
@@ -508,7 +498,9 @@ document.getElementById("send-whatsapp-order-btn").addEventListener("click", () 
       return;
     }
     deliveryFee = zoneOpt ? Number(zoneOpt.dataset.fee) : 0;
-    locationInfo = `🛵 *نوع الطلب:* توصيل للمنزل\n📍 *المنطقة:* ${zoneOpt ? zoneOpt.textContent : ""}\n🏠 *العنوان:* ${address}`;
+    locationInfo = `🛵 *نوع الطلب:* توصيل للمنزل
+📍 *المنطقة:* ${zoneOpt ? zoneOpt.textContent : ""}
+🏠 *العنوان:* ${address}`;
   } else if (selectedOrderType === "pickup") {
     const branch = document.getElementById("pickup-branch-select").value;
     locationInfo = `🏪 *نوع الطلب:* استلام من الفرع (${branch})`;
@@ -534,21 +526,37 @@ document.getElementById("send-whatsapp-order-btn").addEventListener("click", () 
 
   const itemsText = cart.map((item, i) => {
     let line = `${i + 1}. *${item.arName}* ${item.variantLabel ? `(${item.variantLabel})` : ""} × ${item.qty} = ${item.unitPrice * item.qty} ج.م`;
-    if (item.dips.length) line += `\n   - غموس: ${item.dips.join("، ")}`;
-    if (item.addons.length) line += `\n   - إضافات: ${item.addons.map(a => a.name).join("، ")}`;
-    if (item.note) line += `\n   - ملاحظة: ${item.note}`;
+    if (item.dips.length) line += `
+   - غموس: ${item.dips.join("، ")}`;
+    if (item.addons.length) line += `
+   - إضافات: ${item.addons.map(a => a.name).join("، ")}`;
+    if (item.note) line += `
+   - ملاحظة: ${item.note}`;
     return line;
-  }).join("\n");
+  }).join("
+");
 
-  const msg = `🔥 *طلب جديد - عم سمير بتاع الفطير* 🔥\n\n` +
-    `👤 *العميل:* ${name}\n` +
-    `📱 *الموبايل:* ${phone}\n` +
-    `${locationInfo}\n\n` +
-    `📋 *تفاصيل الطلب:*\n${itemsText}\n\n` +
-    `💵 *المجموع الفرعي:* ${subtotal} ج.م\n` +
-    (selectedOrderType === "delivery" ? `🛵 *التوصيل:* ${deliveryFee} ج.م\n` : "") +
+  const msg = `🔥 *طلب جديد - عم سمير بتاع الفطير* 🔥
+
+` +
+    `👤 *العميل:* ${name}
+` +
+    `📱 *الموبايل:* ${phone}
+` +
+    `${locationInfo}
+
+` +
+    `📋 *تفاصيل الطلب:*
+${itemsText}
+
+` +
+    `💵 *المجموع الفرعي:* ${subtotal} ج.م
+` +
+    (selectedOrderType === "delivery" ? `🛵 *التوصيل:* ${deliveryFee} ج.م
+` : "") +
     `💰 *الإجمالي النهائي:* ${grandTotal} ج.م` +
-    (generalNotes ? `\n📝 *ملاحظات عامة:* ${generalNotes}` : "");
+    (generalNotes ? `
+📝 *ملاحظات عامة:* ${generalNotes}` : "");
 
   state.orders.unshift({
     id: "ORD-" + Date.now().toString().slice(-5),
@@ -563,440 +571,6 @@ document.getElementById("send-whatsapp-order-btn").addEventListener("click", () 
 
   const waUrl = `https://wa.me/${state.settings.orderWhatsapp}?text=${encodeURIComponent(msg)}`;
   window.open(waUrl, "_blank");
-});
-
-function isAdminLoggedIn() {
-  return sessionStorage.getItem(AUTH_KEY) === "true";
-}
-
-function updateAdminButtonLabel() {
-  const dict = I18N[currentLang];
-  document.getElementById("admin-btn-label").textContent = isAdminLoggedIn() ? dict.dashBtn : dict.loginBtn;
-}
-
-document.getElementById("admin-entry-btn").addEventListener("click", () => {
-  if (isAdminLoggedIn()) {
-    openDashboard();
-  } else {
-    document.getElementById("login-error-msg").classList.add("hidden");
-    document.getElementById("login-modal").classList.remove("hidden");
-  }
-});
-
-document.getElementById("close-login-modal").addEventListener("click", () => {
-  document.getElementById("login-modal").classList.add("hidden");
-});
-
-document.getElementById("admin-login-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const email = document.getElementById("admin-email-input").value.trim();
-  const pass = document.getElementById("admin-pass-input").value.trim();
-
-  if (email.toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase() && pass === ADMIN_CREDENTIALS.password) {
-    sessionStorage.setItem(AUTH_KEY, "true");
-    document.getElementById("login-modal").classList.add("hidden");
-    updateAdminButtonLabel();
-    openDashboard();
-  } else {
-    document.getElementById("login-error-msg").classList.remove("hidden");
-  }
-});
-
-document.getElementById("admin-logout-btn").addEventListener("click", () => {
-  sessionStorage.removeItem(AUTH_KEY);
-  document.getElementById("dashboard-modal").classList.add("hidden");
-  updateAdminButtonLabel();
-  showToast("تم تسجيل الخروج من لوحة التحكم");
-});
-
-document.getElementById("close-dashboard-btn").addEventListener("click", () => {
-  document.getElementById("dashboard-modal").classList.add("hidden");
-});
-
-document.querySelectorAll(".dash-tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".dash-tab").forEach(t => t.classList.remove("active"));
-    document.querySelectorAll(".dash-panel").forEach(p => p.classList.remove("active"));
-    tab.classList.add("active");
-    document.getElementById(tab.dataset.tab).classList.add("active");
-  });
-});
-
-function openDashboard() {
-  renderDashItems();
-  renderDashCategories();
-  renderDashZones();
-  renderDashBranches();
-  renderDashOrders();
-  loadSettingsToDash();
-  document.getElementById("dashboard-modal").classList.remove("hidden");
-}
-
-function renderDashItems() {
-  const filterCat = document.getElementById("dash-filter-cat");
-  const itemCatSelect = document.getElementById("item-cat-select");
-  const prevFilter = filterCat.value;
-
-  filterCat.innerHTML = `<option value="all">كل الأقسام</option>` + state.categories.map(c => `<option value="${c.id}">${c.ar}</option>`).join("");
-  if (prevFilter) filterCat.value = prevFilter;
-  itemCatSelect.innerHTML = state.categories.map(c => `<option value="${c.id}">${c.ar}</option>`).join("");
-
-  const q = document.getElementById("dash-search-item").value.trim().toLowerCase();
-  const tbody = document.getElementById("dash-items-tbody");
-
-  const filtered = state.items.filter(item => {
-    if (filterCat.value !== "all" && item.cat !== filterCat.value) return false;
-    if (q && !(item.ar + " " + (item.en || "")).toLowerCase().includes(q)) return false;
-    return true;
-  });
-
-  tbody.innerHTML = filtered.map(item => {
-    const catObj = state.categories.find(c => c.id === item.cat);
-    return `
-      <tr>
-        <td><img src="${item.img}" class="table-thumb" /></td>
-        <td><strong>${item.ar}</strong><br><small class="muted-text">${item.en || ""}</small></td>
-        <td>${catObj ? catObj.ar : item.cat}</td>
-        <td>${item.p1}${item.p2 ? " / " + item.p2 : ""} ج.م</td>
-        <td>
-          <button type="button" class="btn-outline" style="padding:4px 10px;font-size:0.8rem" onclick="toggleItemAvailability('${item.id}')">
-            ${item.available ? "✅ متاح" : "🚫 مخفي / غير متاح"}
-          </button>
-        </td>
-        <td>
-          <button type="button" class="btn-gold" style="padding:4px 10px;font-size:0.8rem" onclick="editDashItem('${item.id}')">تعديل</button>
-          <button type="button" class="btn-text-danger" onclick="deleteDashItem('${item.id}')">حذف</button>
-        </td>
-      </tr>
-    `;
-  }).join("");
-}
-
-document.getElementById("dash-filter-cat").addEventListener("change", renderDashItems);
-document.getElementById("dash-search-item").addEventListener("input", renderDashItems);
-
-document.getElementById("open-add-item-btn").addEventListener("click", () => {
-  document.getElementById("edit-item-id").value = "";
-  document.getElementById("item-editor-title").textContent = "إضافة صنف جديد";
-  document.getElementById("item-name-ar").value = "";
-  document.getElementById("item-name-en").value = "";
-  document.getElementById("item-name-fr").value = "";
-  document.getElementById("item-price-1").value = "";
-  document.getElementById("item-price-2").value = "";
-  document.getElementById("item-desc-ar").value = "";
-  document.getElementById("item-desc-en").value = "";
-  document.getElementById("item-editor-box").classList.remove("hidden");
-});
-
-document.getElementById("cancel-item-btn").addEventListener("click", () => {
-  document.getElementById("item-editor-box").classList.add("hidden");
-});
-
-document.getElementById("save-item-btn").addEventListener("click", () => {
-  if (!lockAction(800)) return;
-
-  const id = document.getElementById("edit-item-id").value;
-  const cat = document.getElementById("item-cat-select").value;
-  const ar = document.getElementById("item-name-ar").value.trim();
-  const en = document.getElementById("item-name-en").value.trim();
-  const fr = document.getElementById("item-name-fr").value.trim();
-  const p1 = Number(document.getElementById("item-price-1").value);
-  const p2Raw = document.getElementById("item-price-2").value;
-  const p2 = p2Raw ? Number(p2Raw) : null;
-  const descAr = document.getElementById("item-desc-ar").value.trim();
-  const descEn = document.getElementById("item-desc-en").value.trim();
-  const img = document.getElementById("item-img-select").value;
-
-  if (!ar || !p1) {
-    showToast("⚠️ أدخل اسم الصنف والسعر الأساسي");
-    return;
-  }
-
-  if (id) {
-    const idx = state.items.findIndex(i => i.id === id);
-    if (idx !== -1) {
-      state.items[idx] = { ...state.items[idx], cat, ar, en, fr, p1, p2, descAr, descEn, img };
-    }
-  } else {
-    const duplicate = state.items.some(i => i.cat === cat && i.ar.trim() === ar);
-    if (duplicate) {
-      showToast("⚠️ هذا الصنف موجود بالفعل في نفس القسم!");
-      return;
-    }
-    state.items.unshift({
-      id: "item_" + Date.now(),
-      cat, ar, en, fr, p1, p2, descAr, descEn, img,
-      available: true
-    });
-  }
-
-  saveState();
-  document.getElementById("item-editor-box").classList.add("hidden");
-  renderDashItems();
-  renderMenu();
-  showToast("✅ تم حفظ الصنف بنجاح");
-});
-
-window.editDashItem = function(id) {
-  const item = state.items.find(i => i.id === id);
-  if (!item) return;
-  document.getElementById("edit-item-id").value = item.id;
-  document.getElementById("item-editor-title").textContent = "تعديل الصنف: " + item.ar;
-  document.getElementById("item-cat-select").value = item.cat;
-  document.getElementById("item-name-ar").value = item.ar;
-  document.getElementById("item-name-en").value = item.en || "";
-  document.getElementById("item-name-fr").value = item.fr || "";
-  document.getElementById("item-price-1").value = item.p1;
-  document.getElementById("item-price-2").value = item.p2 || "";
-  document.getElementById("item-desc-ar").value = item.descAr || "";
-  document.getElementById("item-desc-en").value = item.descEn || "";
-  document.getElementById("item-img-select").value = item.img || "images/savory_feteer.jpg";
-  document.getElementById("item-editor-box").classList.remove("hidden");
-};
-
-window.toggleItemAvailability = function(id) {
-  if (!lockAction(300)) return;
-  const item = state.items.find(i => i.id === id);
-  if (item) {
-    item.available = !item.available;
-    saveState();
-    renderDashItems();
-    renderMenu();
-  }
-};
-
-window.deleteDashItem = function(id) {
-  if (!confirm("هل أنت متأكد من حذف هذا الصنف؟")) return;
-  state.items = state.items.filter(i => i.id !== id);
-  saveState();
-  renderDashItems();
-  renderMenu();
-  showToast("🗑️ تم حذف الصنف");
-};
-
-function renderDashCategories() {
-  const list = document.getElementById("dash-categories-list");
-  list.innerHTML = state.categories.map((cat, idx) => `
-    <div class="dash-list-card">
-      <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;">
-        <input type="text" class="form-input" style="max-width:200px" value="${cat.ar}" onchange="updateCatName(${idx}, 'ar', this.value)" />
-        <input type="text" class="form-input" style="max-width:200px" value="${cat.en || ''}" onchange="updateCatName(${idx}, 'en', this.value)" />
-        <input type="text" class="form-input" style="max-width:200px" value="${cat.fr || ''}" onchange="updateCatName(${idx}, 'fr', this.value)" />
-      </div>
-      <button type="button" class="btn-text-danger" onclick="deleteCategory('${cat.id}')">حذف القسم</button>
-    </div>
-  `).join("");
-}
-
-window.updateCatName = function(idx, field, val) {
-  state.categories[idx][field] = val.trim();
-  saveState();
-  renderCategories();
-  renderMenu();
-  showToast("✅ تم تحديث اسم القسم");
-};
-
-document.getElementById("add-cat-btn").addEventListener("click", () => {
-  if (!lockAction(700)) return;
-  const ar = document.getElementById("new-cat-ar").value.trim();
-  const en = document.getElementById("new-cat-en").value.trim();
-  const fr = document.getElementById("new-cat-fr").value.trim();
-  if (!ar) return showToast("⚠️ أدخل اسم القسم بالعربي");
-  if (state.categories.some(c => c.ar === ar)) return showToast("⚠️ القسم موجود بالفعل!");
-
-  state.categories.push({ id: "cat_" + Date.now(), ar, en: en || ar, fr: fr || ar, desc: "" });
-  saveState();
-  document.getElementById("new-cat-ar").value = "";
-  document.getElementById("new-cat-en").value = "";
-  document.getElementById("new-cat-fr").value = "";
-  renderDashCategories();
-  renderDashItems();
-  renderCategories();
-  showToast("✅ تمت إضافة القسم");
-});
-
-window.deleteCategory = function(id) {
-  if (!confirm("سيتم حذف القسم، هل أنت متأكد؟")) return;
-  state.categories = state.categories.filter(c => c.id !== id);
-  saveState();
-  renderDashCategories();
-  renderCategories();
-  renderMenu();
-};
-
-function renderDashZones() {
-  const tbody = document.getElementById("dash-zones-tbody");
-  tbody.innerHTML = state.zones.map(z => `
-    <tr>
-      <td>${z.ar}</td>
-      <td>${z.en || z.ar}</td>
-      <td><strong>${z.fee} ج.م</strong></td>
-      <td><button type="button" class="btn-text-danger" onclick="deleteZone('${z.id}')">حذف</button></td>
-    </tr>
-  `).join("");
-}
-
-document.getElementById("add-zone-btn").addEventListener("click", () => {
-  if (!lockAction(700)) return;
-  const ar = document.getElementById("new-zone-ar").value.trim();
-  const en = document.getElementById("new-zone-en").value.trim();
-  const fee = Number(document.getElementById("new-zone-fee").value);
-  if (!ar || isNaN(fee)) return showToast("⚠️ أدخل اسم المنطقة وسعر التوصيل");
-  if (state.zones.some(z => z.ar === ar)) return showToast("⚠️ هذه المنطقة مضافة بالفعل!");
-
-  state.zones.push({ id: "z_" + Date.now(), ar, en: en || ar, fee });
-  saveState();
-  document.getElementById("new-zone-ar").value = "";
-  document.getElementById("new-zone-en").value = "";
-  document.getElementById("new-zone-fee").value = "";
-  renderDashZones();
-  renderCartUI();
-  showToast("✅ تمت إضافة منطقة التوصيل");
-});
-
-window.deleteZone = function(id) {
-  state.zones = state.zones.filter(z => z.id !== id);
-  saveState();
-  renderDashZones();
-  renderCartUI();
-};
-
-function renderDashBranches() {
-  const list = document.getElementById("dash-branches-list");
-  list.innerHTML = state.branches.map(b => `
-    <div class="dash-list-card">
-      <div>
-        <strong>${b.name}</strong>
-        <div class="muted-text">${b.address} • 📞 ${b.phone}</div>
-      </div>
-      <button type="button" class="btn-text-danger" onclick="deleteBranch('${b.id}')">حذف الفرع</button>
-    </div>
-  `).join("");
-}
-
-document.getElementById("add-branch-btn").addEventListener("click", () => {
-  if (!lockAction(700)) return;
-  const name = document.getElementById("new-branch-name").value.trim();
-  const address = document.getElementById("new-branch-address").value.trim();
-  const phone = document.getElementById("new-branch-phone").value.trim() || "17205";
-  const map = document.getElementById("new-branch-map").value.trim() || "https://maps.google.com";
-  if (!name || !address) return showToast("⚠️ أدخل اسم الفرع والعنوان");
-
-  state.branches.push({ id: "br_" + Date.now(), name, address, phone, map });
-  saveState();
-  document.getElementById("new-branch-name").value = "";
-  document.getElementById("new-branch-address").value = "";
-  document.getElementById("new-branch-phone").value = "";
-  document.getElementById("new-branch-map").value = "";
-  renderDashBranches();
-  renderBranches();
-  showToast("✅ تمت إضافة الفرع");
-});
-
-window.deleteBranch = function(id) {
-  state.branches = state.branches.filter(b => b.id !== id);
-  saveState();
-  renderDashBranches();
-  renderBranches();
-};
-
-function renderDashOrders() {
-  document.getElementById("stat-total-orders").textContent = state.orders.length;
-  const rev = state.orders.reduce((s, o) => s + o.total, 0);
-  document.getElementById("stat-total-revenue").textContent = `${rev} ج.م`;
-
-  const counts = {};
-  state.orders.forEach(o => o.items.forEach(it => {
-    counts[it.name] = (counts[it.name] || 0) + it.qty;
-  }));
-  const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-  document.getElementById("stat-top-item").textContent = top ? `${top[0]} (${top[1]})` : "-";
-
-  const list = document.getElementById("dash-orders-list");
-  if (state.orders.length === 0) {
-    list.innerHTML = `<p class="muted-text text-center my-3">لا توجد طلبات مسجلة بعد.</p>`;
-  } else {
-    list.innerHTML = state.orders.map(o => `
-      <div class="dash-list-card mb-2">
-        <div>
-          <strong>#${o.id} • ${o.customer} (${o.phone})</strong>
-          <div class="muted-text">${o.date} • ${o.items.map(i => `${i.name} ×${i.qty}`).join("، ")}</div>
-        </div>
-        <strong class="price-tag">${o.total} ج.م</strong>
-      </div>
-    `).join("");
-  }
-}
-
-document.getElementById("reset-stats-btn").addEventListener("click", () => {
-  if (!confirm("هل تريد تصفير سجل الطلبات والإحصائيات؟")) return;
-  state.orders = [];
-  saveState();
-  renderDashOrders();
-  showToast("تم تصفير السجل");
-});
-
-function loadSettingsToDash() {
-  document.getElementById("setting-shop-status").value = state.settings.status;
-  document.getElementById("setting-promo-active").checked = state.settings.promoActive;
-  document.getElementById("setting-promo-text").value = state.settings.promoText;
-  document.getElementById("setting-order-whatsapp").value = state.settings.orderWhatsapp;
-  document.getElementById("setting-hotline").value = state.settings.hotline;
-}
-
-document.getElementById("save-settings-btn").addEventListener("click", () => {
-  state.settings.status = document.getElementById("setting-shop-status").value;
-  state.settings.promoActive = document.getElementById("setting-promo-active").checked;
-  state.settings.promoText = document.getElementById("setting-promo-text").value.trim();
-  state.settings.orderWhatsapp = document.getElementById("setting-order-whatsapp").value.trim() || "201124349186";
-  state.settings.hotline = document.getElementById("setting-hotline").value.trim() || "17205";
-  saveState();
-  renderBanners();
-  renderBranches();
-  showToast("✅ تم حفظ إعدادات المطعم");
-});
-
-document.getElementById("export-backup-btn").addEventListener("click", () => {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `uncle_samir_backup_${new Date().toISOString().slice(0, 10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-document.getElementById("import-backup-input").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try {
-      const parsed = JSON.parse(ev.target.result);
-      if (parsed && parsed.items && parsed.categories) {
-        state = parsed;
-        saveState();
-        openDashboard();
-        applyLanguage(currentLang);
-        showToast("✅ تم استعادة النسخة الاحتياطية بنجاح");
-      } else {
-        showToast("⚠️ ملف النسخة الاحتياطية غير صالح");
-      }
-    } catch {
-      showToast("⚠️ خطأ في قراءة الملف");
-    }
-  };
-  reader.readAsText(file);
-});
-
-document.getElementById("factory-reset-btn").addEventListener("click", () => {
-  if (!confirm("هل أنت متأكد من استعادة المنيو الأصلي ومسح كل التعديلات؟")) return;
-  localStorage.removeItem(STORAGE_KEY);
-  state = JSON.parse(JSON.stringify(DEFAULT_DATA));
-  saveState();
-  openDashboard();
-  applyLanguage(currentLang);
-  showToast("✅ تمت استعادة المنيو الأصلي");
 });
 
 document.getElementById("menu-search").addEventListener("input", (e) => {

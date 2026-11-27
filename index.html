@@ -10,25 +10,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Fixed Shop Background with Warm Brand Overlay -->
-  <div class="page-bg" style="background-image: url('images/bg_shop.jpg');"></div>
+  <div class="page-bg" style="background-image: url('bg_shop.jpg');"></div>
   <div class="page-bg-overlay"></div>
 
-  <!-- Promo / Announcement Banner -->
   <div id="promo-banner" class="promo-banner hidden">
     <span id="promo-text"></span>
   </div>
 
-  <!-- Restaurant Status Banner -->
   <div id="status-banner" class="status-banner hidden">
     <span id="status-text"></span>
   </div>
 
-  <!-- Header -->
   <header class="main-header">
     <div class="container header-inner">
       <div class="brand-box">
-        <img src="images/logo.jpg" alt="عم سمير بتاع الفطير" class="header-logo" />
+        <img src="logo.jpg" alt="عم سمير بتاع الفطير" class="header-logo" />
         <div class="brand-titles">
           <h1 data-i18n="brandName">عم سمير بتاع الفطير</h1>
           <span class="hotline-badge">📞 <span data-i18n="hotlineLabel">الخط الساخن:</span> <strong id="header-hotline">17205</strong></span>
@@ -36,20 +32,12 @@
       </div>
 
       <div class="header-actions">
-        <!-- Language Switcher -->
         <div class="lang-switcher" role="group" aria-label="Language Switcher">
           <button type="button" class="lang-btn active" data-lang="ar">عربي</button>
           <button type="button" class="lang-btn" data-lang="en">EN</button>
           <button type="button" class="lang-btn" data-lang="fr">FR</button>
         </div>
 
-        <!-- Admin Login / Dashboard Button -->
-        <button type="button" id="admin-entry-btn" class="btn-outline">
-          <span>👤</span>
-          <span id="admin-btn-label" data-i18n="loginBtn">دخول</span>
-        </button>
-
-        <!-- Cart Button -->
         <button type="button" id="header-cart-btn" class="btn-primary cart-trigger">
           <span>🛒</span>
           <span data-i18n="cartBtn">السلة</span>
@@ -59,7 +47,6 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero-section">
     <div class="container hero-card">
       <div class="hero-content">
@@ -72,12 +59,11 @@
         </div>
       </div>
       <div class="hero-visual">
-        <img src="images/logo.jpg" alt="شعار عم سمير بتاع الفطير" class="hero-main-logo" />
+        <img src="logo.jpg" alt="شعار عم سمير بتاع الفطير" class="hero-main-logo" />
       </div>
     </div>
   </section>
 
-  <!-- Search & Category Tabs -->
   <section id="menu-section" class="sticky-nav-wrapper">
     <div class="container">
       <div class="search-bar-box">
@@ -88,12 +74,10 @@
     </div>
   </section>
 
-  <!-- Main Menu Content -->
   <main class="container menu-container">
     <div id="menu-sections-wrapper"></div>
   </main>
 
-  <!-- Branches Section -->
   <section class="container branches-section">
     <div class="section-header">
       <h3 data-i18n="branchesTitle">📍 فروعنا</h3>
@@ -102,18 +86,16 @@
     <div id="branches-grid" class="branches-grid"></div>
   </section>
 
-  <!-- Footer (Developer section is locked and protected from Admin edits) -->
   <footer class="main-footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <img src="images/avatar.jpg" alt="عم سمير" class="footer-avatar" />
+        <img src="avatar.jpg" alt="عم سمير" class="footer-avatar" />
         <div>
           <h4 data-i18n="brandName">عم سمير بتاع الفطير</h4>
           <p>© <span id="footer-year">2026</span> <span data-i18n="allRights">جميع الحقوق محفوظة</span> • <span id="footer-social">@UNCLESAMIR.EGY</span></p>
         </div>
       </div>
 
-      <!-- LOCKED DEVELOPER SIGNATURE -->
       <div class="dev-signature" id="locked-dev-signature">
         <p class="dev-title">تصميم وتطوير <strong>manar adel</strong></p>
         <a href="https://wa.me/201124349186" target="_blank" rel="noopener noreferrer" class="dev-whatsapp-link" aria-label="تواصل واتساب مع المطور">
@@ -126,7 +108,6 @@
     </div>
   </footer>
 
-  <!-- Floating Cart Bar -->
   <div id="floating-cart-bar" class="floating-cart-bar hidden">
     <div class="container floating-cart-inner">
       <div class="floating-cart-info">
@@ -140,7 +121,6 @@
     </div>
   </div>
 
-  <!-- Product Options Modal (Size / Dips / Add-ons) -->
   <div id="product-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
     <div class="modal-card">
       <button type="button" class="modal-close" id="close-product-modal">✕</button>
@@ -151,31 +131,26 @@
         <h3 id="modal-item-name"></h3>
         <p id="modal-item-desc" class="muted-text"></p>
 
-        <!-- Variants / Sizes -->
         <div id="modal-variants-group" class="option-group hidden">
           <label class="group-label" data-i18n="chooseSize">اختر الحجم / النوع:</label>
           <div id="modal-variants-list" class="radio-grid"></div>
         </div>
 
-        <!-- Dips Selection (for Meshaltet) -->
         <div id="modal-dips-group" class="option-group hidden">
           <label class="group-label"><span data-i18n="chooseDips">اختر الغموس المجاني</span> (<span id="modal-dips-limit">2</span>):</label>
           <div id="modal-dips-list" class="checkbox-grid"></div>
         </div>
 
-        <!-- Paid Add-ons -->
         <div id="modal-addons-group" class="option-group">
           <label class="group-label" data-i18n="extraAddons">إضافات إضافية (اختياري):</label>
           <div id="modal-addons-list" class="checkbox-grid"></div>
         </div>
 
-        <!-- Notes -->
         <div class="option-group">
           <label class="group-label" data-i18n="itemNotes">ملاحظات على الصنف:</label>
           <input type="text" id="modal-item-note" class="form-input" data-i18n-placeholder="notePlaceholder" placeholder="مثال: تسوية زيادة، بدون فلفل..." />
         </div>
 
-        <!-- Quantity & Confirm -->
         <div class="modal-footer-actions">
           <div class="qty-control">
             <button type="button" id="modal-qty-minus">−</button>
@@ -190,7 +165,6 @@
     </div>
   </div>
 
-  <!-- Cart & Checkout Drawer / Modal -->
   <div id="cart-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
     <div class="modal-card modal-lg">
       <button type="button" class="modal-close" id="close-cart-modal">✕</button>
@@ -205,14 +179,12 @@
         <div id="checkout-form-wrapper" class="checkout-section">
           <h4 data-i18n="orderDetailsTitle">تفاصيل الاستلام والتوصيل</h4>
 
-          <!-- Order Type -->
           <div class="order-type-tabs">
             <button type="button" class="order-type-btn active" data-type="delivery" data-i18n="typeDelivery">🛵 توصيل للمنزل</button>
             <button type="button" class="order-type-btn" data-type="pickup" data-i18n="typePickup">🏪 استلام من الفرع</button>
             <button type="button" class="order-type-btn" data-type="dinein" data-i18n="typeDinein">🍽️ داخل المطعم (صالة)</button>
           </div>
 
-          <!-- Customer Info -->
           <div class="form-grid-2">
             <div>
               <label data-i18n="custName">الاسم *</label>
@@ -224,7 +196,6 @@
             </div>
           </div>
 
-          <!-- Delivery Fields -->
           <div id="delivery-fields" class="conditional-fields">
             <div class="form-grid-2">
               <div>
@@ -238,25 +209,21 @@
             </div>
           </div>
 
-          <!-- Pickup Fields -->
           <div id="pickup-fields" class="conditional-fields hidden">
             <label data-i18n="selectBranch">اختر فرع الاستلام:</label>
             <select id="pickup-branch-select" class="form-input"></select>
           </div>
 
-          <!-- Dine-in Fields -->
           <div id="dinein-fields" class="conditional-fields hidden">
             <label data-i18n="tableNumber">رقم الطاولة *</label>
             <input type="text" id="table-number" class="form-input" data-i18n-placeholder="tablePh" placeholder="مثال: طاولة 5" />
           </div>
 
-          <!-- Order General Notes -->
           <div class="mt-2">
             <label data-i18n="generalNotes">ملاحظات إضافية للطلب:</label>
             <input type="text" id="order-notes" class="form-input" data-i18n-placeholder="generalNotesPh" placeholder="أي تعليمات إضافية..." />
           </div>
 
-          <!-- Totals Summary -->
           <div class="totals-box">
             <div class="total-row">
               <span data-i18n="subtotal">المجموع الفرعي:</span>
@@ -281,267 +248,9 @@
     </div>
   </div>
 
-  <!-- Admin Login Modal -->
-  <div id="login-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
-    <div class="modal-card modal-sm">
-      <button type="button" class="modal-close" id="close-login-modal">✕</button>
-      <div class="modal-body">
-        <div class="text-center mb-3">
-          <img src="images/avatar.jpg" alt="Admin" class="login-avatar" />
-          <h3>لوحة تحكم الإدارة</h3>
-          <p class="muted-text">تسجيل الدخول لإدارة منيو عم سمير</p>
-        </div>
-        <form id="admin-login-form">
-          <div class="mb-2">
-            <label>البريد الإلكتروني</label>
-            <input type="email" id="admin-email-input" class="form-input" placeholder="admin@UncleSamir.com" required />
-          </div>
-          <div class="mb-3">
-            <label>كلمة المرور</label>
-            <input type="password" id="admin-pass-input" class="form-input" placeholder="••••••••" required />
-          </div>
-          <p id="login-error-msg" class="error-text hidden">بيانات الدخول غير صحيحة!</p>
-          <button type="submit" class="btn-primary w-100">دخول للداش بورد</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Admin Dashboard Modal -->
-  <div id="dashboard-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
-    <div class="modal-card modal-xl">
-      <div class="dash-topbar">
-        <div class="dash-title">
-          <img src="images/avatar.jpg" alt="Admin" />
-          <div>
-            <h3>داش بورد عم سمير بتاع الفطير</h3>
-            <small>التحكم الكامل في المنيو والطلبات والإعدادات</small>
-          </div>
-        </div>
-        <div class="dash-top-actions">
-          <button type="button" id="admin-logout-btn" class="btn-outline-light">تسجيل خروج</button>
-          <button type="button" id="close-dashboard-btn" class="modal-close-static">✕</button>
-        </div>
-      </div>
-
-      <!-- Dashboard Navigation Tabs -->
-      <div class="dash-tabs">
-        <button type="button" class="dash-tab active" data-tab="tab-items">🍕 الأصناف والأسعار</button>
-        <button type="button" class="dash-tab" data-tab="tab-categories">📂 الأقسام</button>
-        <button type="button" class="dash-tab" data-tab="tab-zones">🛵 مناطق التوصيل</button>
-        <button type="button" class="dash-tab" data-tab="tab-branches">📍 الفروع</button>
-        <button type="button" class="dash-tab" data-tab="tab-orders">📊 سجل الطلبات والإحصائيات</button>
-        <button type="button" class="dash-tab" data-tab="tab-settings">⚙️ حالة المطعم والنسخ الاحتياطي</button>
-      </div>
-
-      <div class="dash-content">
-        <!-- Tab 1: Items Management -->
-        <div id="tab-items" class="dash-panel active">
-          <div class="panel-header-flex">
-            <h4>إدارة الأصناف (إضافة / تعديل / إخفاء غير متاح / حذف)</h4>
-            <button type="button" id="open-add-item-btn" class="btn-primary">+ إضافة صنف جديد</button>
-          </div>
-
-          <!-- Add/Edit Item Form -->
-          <div id="item-editor-box" class="editor-box hidden">
-            <h5 id="item-editor-title">إضافة صنف جديد</h5>
-            <input type="hidden" id="edit-item-id" />
-            <div class="form-grid-3">
-              <div>
-                <label>القسم *</label>
-                <select id="item-cat-select" class="form-input"></select>
-              </div>
-              <div>
-                <label>اسم الصنف (عربي) *</label>
-                <input type="text" id="item-name-ar" class="form-input" placeholder="مثال: فطيرة سجق كيري" />
-              </div>
-              <div>
-                <label>اسم الصنف (إنجليزي)</label>
-                <input type="text" id="item-name-en" class="form-input" placeholder="Sausage Kiri Feteer" />
-              </div>
-              <div>
-                <label>اسم الصنف (فرنسي)</label>
-                <input type="text" id="item-name-fr" class="form-input" placeholder="Feteer Saucisse Kiri" />
-              </div>
-              <div>
-                <label>السعر الأساسي / الوسط (ج.م) *</label>
-                <input type="number" id="item-price-1" class="form-input" placeholder="195" />
-              </div>
-              <div>
-                <label>السعر الكبير / العائلي (اختياري)</label>
-                <input type="number" id="item-price-2" class="form-input" placeholder="260" />
-              </div>
-              <div>
-                <label>الوصف (عربي)</label>
-                <input type="text" id="item-desc-ar" class="form-input" placeholder="مكونات الصنف..." />
-              </div>
-              <div>
-                <label>الوصف (إنجليزي)</label>
-                <input type="text" id="item-desc-en" class="form-input" placeholder="Ingredients..." />
-              </div>
-              <div>
-                <label>صورة الصنف</label>
-                <select id="item-img-select" class="form-input">
-                  <option value="images/savory_feteer.jpg">صورة فطير حادق / مخصوص</option>
-                  <option value="images/meshaltet.jpg">صورة فطير مشلتت بالسمن البلدي</option>
-                  <option value="images/sweet_feteer.jpg">صورة فطير حلو بالشوكولاتة</option>
-                  <option value="images/haga_roka.jpg">صورة الحاجة روقة</option>
-                  <option value="images/logo.jpg">لوجو عم سمير</option>
-                </select>
-              </div>
-            </div>
-            <div class="editor-actions mt-2">
-              <button type="button" id="save-item-btn" class="btn-primary">حفظ الصنف</button>
-              <button type="button" id="cancel-item-btn" class="btn-outline">إلغاء</button>
-            </div>
-          </div>
-
-          <div class="filter-row mb-2">
-            <select id="dash-filter-cat" class="form-input max-w-xs">
-              <option value="all">كل الأقسام</option>
-            </select>
-            <input type="text" id="dash-search-item" class="form-input max-w-xs" placeholder="بحث في الأصناف..." />
-          </div>
-
-          <div class="table-responsive">
-            <table class="dash-table">
-              <thead>
-                <tr>
-                  <th>الصورة</th>
-                  <th>الصنف</th>
-                  <th>القسم</th>
-                  <th>السعر</th>
-                  <th>الحالة</th>
-                  <th>إجراءات</th>
-                </tr>
-              </thead>
-              <tbody id="dash-items-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Tab 2: Categories Management -->
-        <div id="tab-categories" class="dash-panel">
-          <div class="panel-header-flex">
-            <h4>إدارة الأقسام (تعديل الأسماء أو إضافة قسم)</h4>
-          </div>
-          <div class="add-inline-box mb-3">
-            <input type="text" id="new-cat-ar" class="form-input" placeholder="اسم القسم بالعربي" />
-            <input type="text" id="new-cat-en" class="form-input" placeholder="Category Name (EN)" />
-            <input type="text" id="new-cat-fr" class="form-input" placeholder="Nom de catégorie (FR)" />
-            <button type="button" id="add-cat-btn" class="btn-primary">+ إضافة قسم</button>
-          </div>
-          <div id="dash-categories-list" class="dash-cards-list"></div>
-        </div>
-
-        <!-- Tab 3: Delivery Zones -->
-        <div id="tab-zones" class="dash-panel">
-          <h4>إدارة مناطق التوصيل وأسعارها</h4>
-          <div class="add-inline-box mb-3">
-            <input type="text" id="new-zone-ar" class="form-input" placeholder="اسم المنطقة (عربي)" />
-            <input type="text" id="new-zone-en" class="form-input" placeholder="Zone Name (EN)" />
-            <input type="number" id="new-zone-fee" class="form-input" placeholder="سعر التوصيل (ج.م)" />
-            <button type="button" id="add-zone-btn" class="btn-primary">+ إضافة منطقة</button>
-          </div>
-          <div class="table-responsive">
-            <table class="dash-table">
-              <thead>
-                <tr>
-                  <th>المنطقة (عربي)</th>
-                  <th>المنطقة (EN)</th>
-                  <th>سعر التوصيل</th>
-                  <th>حذف</th>
-                </tr>
-              </thead>
-              <tbody id="dash-zones-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Tab 4: Branches -->
-        <div id="tab-branches" class="dash-panel">
-          <h4>إدارة الفروع</h4>
-          <div class="form-grid-2 mb-3 editor-box">
-            <input type="text" id="new-branch-name" class="form-input" placeholder="اسم الفرع (مثال: فرع المعادي)" />
-            <input type="text" id="new-branch-address" class="form-input" placeholder="العنوان بالتفصيل" />
-            <input type="text" id="new-branch-phone" class="form-input" placeholder="رقم الهاتف / الواتساب" />
-            <input type="url" id="new-branch-map" class="form-input" placeholder="رابط خريطة جوجل (https://maps.google.com/...)" />
-            <button type="button" id="add-branch-btn" class="btn-primary">+ إضافة فرع</button>
-          </div>
-          <div id="dash-branches-list" class="dash-cards-list"></div>
-        </div>
-
-        <!-- Tab 5: Orders Log & Stats -->
-        <div id="tab-orders" class="dash-panel">
-          <div class="panel-header-flex">
-            <h4>سجل الطلبات والإحصائيات</h4>
-            <button type="button" id="reset-stats-btn" class="btn-text-danger">🗑️ تصفير السجل والإحصائيات</button>
-          </div>
-          <div class="stats-grid mb-3">
-            <div class="stat-box">
-              <span class="stat-label">إجمالي الطلبات</span>
-              <strong id="stat-total-orders">0</strong>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">إجمالي المبيعات التقديرية</span>
-              <strong id="stat-total-revenue">0 ج.م</strong>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">الأكثر طلباً</span>
-              <strong id="stat-top-item">-</strong>
-            </div>
-          </div>
-          <div id="dash-orders-list" class="orders-history-list"></div>
-        </div>
-
-        <!-- Tab 6: Restaurant Status, Promo & Backup -->
-        <div id="tab-settings" class="dash-panel">
-          <div class="settings-grid">
-            <div class="editor-box">
-              <h4>🚦 حالة استقبال الطلبات</h4>
-              <select id="setting-shop-status" class="form-input mb-2">
-                <option value="open">🟢 مفتوح الآن (يستقبل الطلبات بشكل طبيعي)</option>
-                <option value="busy">🟠 ضغط طلبات (قد يستغرق التوصيل وقتاً إضافياً)</option>
-                <option value="closed">🔴 مغلق مؤقتاً</option>
-              </select>
-
-              <h4 class="mt-3">📢 شريط الإعلانات والعروض العاجلة</h4>
-              <label class="checkbox-inline mb-2">
-                <input type="checkbox" id="setting-promo-active" />
-                <span>تفعيل شريط الإعلانات أعلى المنيو</span>
-              </label>
-              <input type="text" id="setting-promo-text" class="form-input mb-2" placeholder="مثال: توصيل مجاني اليوم للطلبات فوق 400 جنيه!" />
-
-              <h4 class="mt-3">📞 بيانات التواصل للمطعم</h4>
-              <label>رقم واتساب استقبال الطلبات (بصيغة دولية بدون +)</label>
-              <input type="text" id="setting-order-whatsapp" class="form-input mb-2" placeholder="201124349186" />
-              <label>الخط الساخن</label>
-              <input type="text" id="setting-hotline" class="form-input mb-2" placeholder="17205" />
-
-              <button type="button" id="save-settings-btn" class="btn-primary mt-2">حفظ الإعدادات</button>
-            </div>
-
-            <div class="editor-box">
-              <h4>💾 النسخ الاحتياطي والاستعادة (Backup & Restore)</h4>
-              <p class="muted-text mb-2">احفظ نسخة من جميع تعديلاتك على المنيو والأسعار في ملف JSON أو استرجعها في أي وقت.</p>
-              <button type="button" id="export-backup-btn" class="btn-gold w-100 mb-2">⬇️ تحميل نسخة احتياطية (JSON)</button>
-              <label class="btn-outline w-100 text-center file-upload-label">
-                ⬆️ استعادة من ملف نسخة احتياطية
-                <input type="file" id="import-backup-input" accept=".json" hidden />
-              </label>
-              <hr class="my-3" />
-              <button type="button" id="factory-reset-btn" class="btn-text-danger w-100">⚠️ استعادة ضبط المصنع للمنيو الأصلي</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
   <div id="toast-box" class="toast-box hidden"></div>
 
-    <script type="module">
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
     import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -581,7 +290,7 @@
               } catch (e) {}
             }
           }, (err) => {
-            console.warn("Firestore listener inactive (check rules/network):", err);
+            console.warn("Firestore listener inactive:", err);
           });
         } catch (e) {}
       }
@@ -606,5 +315,25 @@
   </script>
   <script src="data.js"></script>
   <script src="app.js"></script>
+
+<script>
+  document.addEventListener("error", function(e) {
+    const el = e.target;
+    if (el && el.tagName === "IMG") {
+      const src = el.getAttribute("src") || "";
+      if (!el.dataset.triedAlt) {
+        el.dataset.triedAlt = "1";
+        if (src.startsWith("images/")) {
+          el.src = src.replace(/^images\//, "");
+        } else {
+          el.src = "images/" + src.replace(/^\.\//, "");
+        }
+      } else if (!el.dataset.triedLogo) {
+        el.dataset.triedLogo = "1";
+        el.src = "logo.jpg";
+      }
+    }
+  }, true);
+</script>
 </body>
 </html>
