@@ -1,145 +1,151 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>لوحة تحكم الإدارة | عم سمير</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
-<style>
-.top{background:#2c1810;color:#fff;padding:12px 0;border-bottom:4px solid var(--gold);position:sticky;top:0;z-index:90}
-.top .container{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.top img{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);vertical-align:middle;margin-inline-end:8px}
-.login{max-width:400px;margin:60px auto;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:28px 22px;text-align:center}
-.login input{margin-bottom:10px;text-align:center}
-.tabs{display:flex;gap:8px;overflow-x:auto;margin:18px 0}.tab{border:1.5px solid var(--line);background:#fff;padding:8px 16px;border-radius:12px;font-weight:800;cursor:pointer;white-space:nowrap}.tab.on{background:var(--red);color:#fff;border-color:var(--red)}
-.panel{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
-.panel h3{color:var(--red);margin-bottom:12px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
-.row .in{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.mini{width:84px;padding:6px;border:1.5px solid var(--line);border-radius:8px;text-align:center;font-weight:700}
-.mid{width:150px;text-align:start}
-.sw{border:0;border-radius:9px;padding:6px 12px;color:#fff;font-weight:800;cursor:pointer}.sw.on{background:#1e8449}.sw.off{background:#c0392b}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0}
-.stat{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px;text-align:center}.stat b{display:block;font-size:1.4rem;color:var(--red)}
-.lock{margin-top:30px;padding:14px;text-align:center;border:1.5px dashed var(--line);border-radius:14px;color:var(--mute);font-weight:700}
-.pill{font-size:.8rem;color:#1e8449;font-weight:800}
-</style></head><body>
-<header class="top"><div class="container"><div><img src="../logo.jpg" alt=""><b>لوحة تحكم الإدارة • عم سمير بتاع الفطير</b> <span class="pill" id="sync">● متصل</span></div>
-<div><a class="btn-gold" href="../index.html" target="_blank">👁️ معاينة المنيو</a> <button class="btn-dark-red hidden" id="out">خروج</button></div></div></header>
-<main class="container">
-<div class="login" id="login"><img src="../avatar.jpg" width="90" height="90" style="border-radius:50%;border:3px solid var(--red);margin-bottom:10px" alt="">
-<h3 style="color:var(--red);margin-bottom:12px">دخول الإدارة</h3>
-<input id="em" type="email" class="form-input" placeholder="البريد الإلكتروني" autocomplete="username">
-<input id="pw" type="password" class="form-input" placeholder="كلمة المرور" autocomplete="current-password">
-<button class="btn-primary" style="width:100%" id="go">دخول</button></div>
-
-<div id="dash" class="hidden">
-<div class="stats" id="stats"></div>
-<div class="tabs" id="tabs">
-<button class="tab on" data-t="items">🍽️ الأصناف</button><button class="tab" data-t="add">➕ صنف جديد</button><button class="tab" data-t="cats">🗂️ الأقسام</button><button class="tab" data-t="zones">🛵 التوصيل</button><button class="tab" data-t="set">⚙️ الحالة والإعدادات</button><button class="tab" data-t="br">🏪 الفروع</button><button class="tab" data-t="ord">📋 الطلبات</button><button class="tab" data-t="bk">💾 نسخة احتياطية</button></div>
-
-<section class="panel" id="p-items"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px"><h3>الأصناف والأسعار</h3><input id="s" class="form-input" style="max-width:260px" placeholder="بحث..."></div><div id="l-items"></div></section>
-
-<section class="panel hidden" id="p-add"><h3>إضافة صنف</h3><div class="form-grid-2">
-<div><label>القسم *</label><select id="n-cat" class="form-input"></select></div>
-<div><label>الاسم بالعربي *</label><input id="n-ar" class="form-input"></div>
-<div><label>الاسم بالإنجليزي</label><input id="n-en" class="form-input"></div>
-<div><label>الاسم بالفرنسية</label><input id="n-fr" class="form-input"></div>
-<div><label>الوصف</label><input id="n-d" class="form-input"></div>
-<div><label>السعر الأول (وسط) *</label><input id="n-p1" type="number" class="form-input"></div>
-<div><label>السعر الثاني (كبير) - اختياري</label><input id="n-p2" type="number" class="form-input"></div></div>
-<button class="btn-primary mt-2" id="n-go">حفظ ونشر ✓</button></section>
-
-<section class="panel hidden" id="p-cats"><h3>الأقسام</h3><div class="form-grid-2" style="margin-bottom:12px"><input id="c-ar" class="form-input" placeholder="اسم القسم بالعربي"><div style="display:flex;gap:8px"><input id="c-en" class="form-input" placeholder="English"><button class="btn-primary" id="c-go">إضافة</button></div></div><div id="l-cats"></div></section>
-
-<section class="panel hidden" id="p-zones"><h3>مناطق التوصيل</h3><div class="form-grid-2" style="margin-bottom:12px"><input id="z-ar" class="form-input" placeholder="اسم المنطقة"><div style="display:flex;gap:8px"><input id="z-fee" type="number" class="form-input" placeholder="الرسوم"><button class="btn-primary" id="z-go">إضافة</button></div></div><div id="l-zones"></div></section>
-
-<section class="panel hidden" id="p-set"><h3>حالة المطعم والعروض</h3><div class="form-grid-2">
-<div><label>الحالة</label><select id="st" class="form-input"><option value="open">🟢 مفتوح</option><option value="busy">🟠 ضغط طلبات</option><option value="closed">🔴 مغلق مؤقتاً</option></select></div>
-<div><label>واتساب استقبال الطلبات (دولي بدون +)</label><input id="wa" class="form-input"></div>
-<div><label>الخط الساخن</label><input id="hl" class="form-input"></div>
-<div><label>شريط العروض</label><select id="pa" class="form-input"><option value="true">مفعّل</option><option value="false">مخفي</option></select></div></div>
-<div class="mt-2"><label>نص العرض</label><input id="pt" class="form-input"></div>
-<div class="mt-2" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-primary" id="sv">💾 حفظ ونشر</button><button class="btn-dark-red" id="rs">🔄 استعادة الافتراضي</button></div></section>
-
-<section class="panel hidden" id="p-br"><h3>الفروع</h3><div class="form-grid-2" style="margin-bottom:12px"><input id="b-ar" class="form-input" placeholder="اسم الفرع"><input id="b-ph" class="form-input" placeholder="الهاتف"><input id="b-ad" class="form-input" placeholder="العنوان"><div style="display:flex;gap:8px"><input id="b-mp" class="form-input" placeholder="رابط الخريطة"><button class="btn-primary" id="b-go">إضافة</button></div></div><div id="l-br"></div></section>
-
-<section class="panel hidden" id="p-ord"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><h3>الطلبات</h3><span class="muted-text">الأكثر طلباً: <b id="top"></b></span></div><div id="l-ord"></div></section>
-
-<section class="panel hidden" id="p-bk"><h3>نسخة احتياطية</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-primary" id="ex">⬇️ تصدير</button><label class="btn-gold" style="cursor:pointer;margin:0">⬆️ استيراد<input type="file" id="im" accept=".json" hidden></label></div></section>
-
-<div class="lock">🔒 تصميم وتطوير manar adel • قسم الحقوق ثابت ولا يمكن تعديله من هنا</div>
-</div></main>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>عم سمير بتاع الفطير | المنيو</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page-bg" style="background-image:url('bg_shop.jpg')"></div><div class="page-bg-overlay"></div>
+<header class="hero" style="--bg:url('bg_shop.jpg')">
+ <div class="container">
+  <div class="topbar"><div class="lang" id="lang"></div><a class="admin-link" href="admin.html" id="t-admin"></a></div>
+  <img class="logo" src="logo.jpg" alt="عم سمير">
+  <h1 id="t-title"></h1><p id="t-sub"></p>
+  <a class="hotline" id="hot" href="tel:17205">17205</a>
+ </div>
+</header>
+<div id="status" class="status hidden"></div>
+<div id="promo" class="promo hidden"><span id="promo-t"></span></div>
+<div class="nav"><div class="container">
+ <input id="q" class="form-input"><div class="chips" id="chips"></div>
+</div></div>
+<main class="container" id="menu"></main>
+<footer class="container">
+ <div id="t-foot"></div>
+ <div>تصميم وتطوير manar adel</div>
+ <a href="https://wa.me/201124349186" target="_blank" rel="noopener">💬 01124349186</a>
+</footer>
+<div class="cartbar hidden" id="cartbar"><div><b id="cb-n"></b> • <b id="cb-t"></b></div><button class="btn-gold" id="cb-open"></button></div>
+<div class="drawer-bg hidden" id="dbg"><div class="drawer" id="drawer"></div></div>
 <div id="toast" class="toast-box hidden"></div>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import {getFirestore,doc,getDoc,setDoc,onSnapshot,collection,query,orderBy,limit,getDocs,deleteDoc} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-const db=getFirestore(initializeApp({apiKey:"AIzaSyBtgpiZ8WvePAifWGmfL7Pv4AO41JzSuMg",authDomain:"uncle-samir.firebaseapp.com",projectId:"uncle-samir",storageBucket:"uncle-samir.firebasestorage.app",messagingSenderId:"426745500615",appId:"1:426745500615:web:2dc8ac6fe717980eeebfe2"}));
-const ref=doc(db,"menus","uncle_samir_main");
-window.cloud={
- async save(d){try{await setDoc(ref,{payload:JSON.stringify(d),updatedAt:Date.now()});$("sync").textContent="● تم الحفظ والمزامنة";return true}catch(e){$("sync").textContent="● فشل الحفظ - راجع صلاحيات Firestore";return false}},
- async orders(){try{const s=await getDocs(query(collection(db,"orders"),orderBy("ts","desc"),limit(200)));return s.docs.map(d=>d.data())}catch(e){return null}},
- async clear(list){for(const o of list)try{await deleteDoc(doc(db,"orders",o.id))}catch(e){}}
-};
-const $=id=>document.getElementById(id);
-try{const s=await getDoc(ref);if(s.exists()&&s.data().payload)window.load(JSON.parse(s.data().payload))}catch(e){}
-onSnapshot(ref,s=>{if(s.exists()&&s.data().payload&&window.load)window.load(JSON.parse(s.data().payload))},()=>{});
+import {getFirestore,doc,onSnapshot,setDoc} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+const fb=initializeApp({apiKey:"AIzaSyBtgpiZ8WvePAifWGmfL7Pv4AO41JzSuMg",authDomain:"uncle-samir.firebaseapp.com",projectId:"uncle-samir",storageBucket:"uncle-samir.firebasestorage.app",messagingSenderId:"426745500615",appId:"1:426745500615:web:2dc8ac6fe717980eeebfe2"});
+const db=getFirestore(fb);
+window.saveOrder=(o)=>setDoc(doc(db,"orders",o.id),o).catch(()=>{});
+onSnapshot(doc(db,"menus","uncle_samir_main"),s=>{if(s.exists()&&s.data().payload){const d=JSON.parse(s.data().payload);if(d&&d.items){window.__setState(d);}}},()=>{});
 </script>
-<script src="../data.js"></script>
+<script src="data.js"></script>
 <script>
-const KEY="uncle_samir_menu_v1",EMAIL="admin@unclesamir.com",PASS="asd@123";
-const $=id=>document.getElementById(id);
+const KEY="uncle_samir_menu_v1";
 let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S||!S.items)S=JSON.parse(JSON.stringify(DEFAULT_DATA));
-S.branches=S.branches||[];S.zones=S.zones||[];
-let orders=[];
-const toast=m=>{const t=$("toast");t.textContent=m;t.classList.remove("hidden");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.add("hidden"),2200)};
-const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
-async function persist(msg){localStorage.setItem(KEY,JSON.stringify(S));const ok=window.cloud?await window.cloud.save(S):false;renderAll();toast(ok?(msg||"✅ تم الحفظ والنشر"):"⚠️ حُفظ محلياً فقط - راجع Firestore")}
-window.load=d=>{if(!d||!d.items)return;S=d;S.branches=S.branches||[];localStorage.setItem(KEY,JSON.stringify(S));renderAll()};
-const auth=()=>{$("login").classList.add("hidden");$("dash").classList.remove("hidden");$("out").classList.remove("hidden");renderAll();loadOrders()};
-if(sessionStorage.getItem("us_admin")==="1")auth();
-$("go").onclick=()=>{if($("em").value.trim().toLowerCase()===EMAIL&&$("pw").value===PASS){sessionStorage.setItem("us_admin","1");auth()}else toast("❌ البريد أو كلمة المرور غير صحيحة")};
-$("pw").addEventListener("keydown",e=>{if(e.key==="Enter")$("go").click()});
-$("out").onclick=()=>{sessionStorage.removeItem("us_admin");location.reload()};
-$("tabs").onclick=e=>{const b=e.target.closest(".tab");if(!b)return;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));["items","add","cats","zones","set","br","ord","bk"].forEach(t=>$("p-"+t).classList.toggle("hidden",t!==b.dataset.t));if(b.dataset.t==="ord")loadOrders()};
-async function loadOrders(){const o=window.cloud&&await window.cloud.orders();orders=o||[];renderOrders()}
-function renderOrders(){
- $("l-ord").innerHTML=orders.length?orders.map(o=>`<div class="row"><div><b>${esc(o.id)} • ${esc(o.customer)} (${esc(o.phone)})</b><div class="muted-text">${esc(o.date)} • ${esc(o.type)} • ${(o.items||[]).map(x=>esc(x.name)+" ×"+x.qty).join("، ")}</div></div><b class="price-tag">${o.total} ج.م</b></div>`).join("")+`<button class="btn-text-danger" onclick="clearOrders()">مسح السجل</button>`:`<p class="muted-text">لا توجد طلبات بعد.</p>`;
- const cnt={};orders.forEach(o=>(o.items||[]).forEach(x=>cnt[x.name]=(cnt[x.name]||0)+x.qty));
- $("top").textContent=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]+" ("+x[1]+")").join("، ")||"-";
- renderStats()}
-function renderStats(){const sales=orders.reduce((a,o)=>a+(o.total||0),0);
- $("stats").innerHTML=[["الأصناف",S.items.length],["المتاحة",S.items.filter(i=>i.available).length],["الأقسام",S.categories.length],["الطلبات",orders.length],["المبيعات التقديرية",sales+" ج.م"]].map(x=>`<div class="stat"><span class="muted-text">${x[0]}</span><b>${x[1]}</b></div>`).join("")}
-window.clearOrders=async()=>{if(!confirm("مسح كل الطلبات؟"))return;await window.cloud.clear(orders);orders=[];renderOrders()};
-function renderAll(){
- renderStats();
- $("n-cat").innerHTML=S.categories.map(c=>`<option value="${c.id}">${esc(c.ar)}</option>`).join("");
- const q=$("s").value.trim().toLowerCase();
- $("l-items").innerHTML=S.items.filter(i=>!q||(i.ar+" "+(i.en||"")).toLowerCase().includes(q)).map(i=>`<div class="row"><div><b>${esc(i.ar)}</b><div class="muted-text">${esc((S.categories.find(c=>c.id===i.cat)||{}).ar||"")}</div></div><div class="in">
- <input class="mini mid" value="${esc(i.ar)}" onchange="upd('${i.id}','ar',this.value)">
- <input class="mini" type="number" value="${i.p1}" onchange="upd('${i.id}','p1',this.value)">
- <input class="mini" type="number" value="${i.p2||""}" placeholder="-" onchange="upd('${i.id}','p2',this.value)">
- <button class="sw ${i.available?"on":"off"}" onclick="tog('${i.id}')">${i.available?"متاح ✓":"غير متاح ✕"}</button>
- <button class="btn-text-danger" onclick="del('${i.id}')">حذف</button></div></div>`).join("");
- $("l-cats").innerHTML=S.categories.map((c,k)=>`<div class="row"><input class="mini mid" value="${esc(c.ar)}" onchange="cedit(${k},'ar',this.value)"><input class="mini mid" value="${esc(c.en||"")}" onchange="cedit(${k},'en',this.value)"><div class="in"><button class="sw on" onclick="cmove(${k},-1)">▲</button><button class="sw on" onclick="cmove(${k},1)">▼</button><button class="btn-text-danger" onclick="cdel(${k})">حذف</button></div></div>`).join("");
- $("l-zones").innerHTML=S.zones.map((z,k)=>`<div class="row"><b>📍 ${esc(z.ar)}</b><div class="in"><input class="mini" type="number" value="${z.fee}" onchange="S.zones[${k}].fee=Number(this.value)||0;persist()">ج.م<button class="btn-text-danger" onclick="S.zones.splice(${k},1);persist()">حذف</button></div></div>`).join("");
- $("l-br").innerHTML=S.branches.map((b,k)=>`<div class="row"><div><b>${esc(b.ar)}</b><div class="muted-text">${esc(b.phone)} • ${esc(b.address)} ${b.map?`• <a href="${esc(b.map)}" target="_blank">الخريطة</a>`:""}</div></div><button class="btn-text-danger" onclick="S.branches.splice(${k},1);persist()">حذف</button></div>`).join("");
- const s=S.settings;$("st").value=s.status||"open";$("wa").value=s.orderWhatsapp||"";$("hl").value=s.hotline||"";$("pa").value=String(!!s.promoActive);$("pt").value=s.promoText||"";
+let lang=localStorage.getItem("us_lang")||"ar",cart={},type="delivery",qtext="",ctab="";
+const T={
+ar:{title:"عم سمير بتاع الفطير",sub:"أحلى فطير وحواوشي في مصر",search:"ابحث في المنيو...",add:"إضافة",cart:"عرض السلة",items:"أصناف",cur:"ج.م",cart_t:"سلتك",empty:"السلة فاضية",delivery:"توصيل",pickup:"استلام",dine:"صالة",zone:"اختر المنطقة",addr:"العنوان بالتفصيل",table:"رقم الطاولة",name:"الاسم",phone:"رقم الموبايل",note:"ملاحظات",sub_t:"المجموع",fee:"التوصيل",total:"الإجمالي",send:"إرسال الطلب على واتساب",na:"غير متاح حالياً",closed:"المطعم مغلق مؤقتاً ولا يستقبل طلبات",busy:"ضغط طلبات حالياً، قد يتأخر التوصيل قليلاً",admin:"دخول",need:"من فضلك أكمل البيانات المطلوبة",foot:"جميع الأسعار شاملة الضريبة",roka:"غير مسموح الاقتراب أو محاولة التقليد",rokaT:"الحاجة روقة",close:"إغلاق",order:"طلب جديد"},
+en:{title:"Uncle Samir – Feteer",sub:"Egypt's best feteer & hawawshi",search:"Search the menu...",add:"Add",cart:"View cart",items:"items",cur:"EGP",cart_t:"Your cart",empty:"Your cart is empty",delivery:"Delivery",pickup:"Pickup",dine:"Dine-in",zone:"Choose zone",addr:"Full address",table:"Table number",name:"Name",phone:"Mobile number",note:"Notes",sub_t:"Subtotal",fee:"Delivery",total:"Total",send:"Send order via WhatsApp",na:"Unavailable",closed:"We are temporarily closed",busy:"High demand, delivery may be slightly delayed",admin:"Login",need:"Please complete the required fields",foot:"All prices include tax",roka:"Approaching or imitating is not allowed",rokaT:"Haga Roka",close:"Close",order:"New order"},
+fr:{title:"Oncle Samir – Feteer",sub:"Le meilleur feteer d'Égypte",search:"Rechercher...",add:"Ajouter",cart:"Voir le panier",items:"articles",cur:"EGP",cart_t:"Votre panier",empty:"Panier vide",delivery:"Livraison",pickup:"À emporter",dine:"Sur place",zone:"Choisir la zone",addr:"Adresse complète",table:"Numéro de table",name:"Nom",phone:"Téléphone",note:"Remarques",sub_t:"Sous-total",fee:"Livraison",total:"Total",send:"Envoyer par WhatsApp",na:"Indisponible",closed:"Fermé temporairement",busy:"Forte demande, livraison légèrement retardée",admin:"Connexion",need:"Veuillez remplir les champs requis",foot:"Tous les prix incluent la taxe",roka:"Interdit de s'approcher ou d'imiter",rokaT:"Haga Roka",close:"Fermer",order:"Nouvelle commande"}};
+const $=id=>document.getElementById(id);
+const tr=k=>T[lang][k];
+const nm=(o)=>lang==="ar"?o.ar:(o[lang]||o.en||o.ar);
+const sz=(c,i)=>c["s"+i]?({ar:c["s"+i],en:i==1?"Medium":"Large",fr:i==1?"Moyen":"Grand"})[lang]:"";
+const esc=s=>String(s||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+function toast(m){const t=$("toast");t.textContent=m;t.classList.remove("hidden");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.add("hidden"),2200)}
+window.__setState=d=>{S=d;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}render()};
+function chrome(){
+ document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ $("t-title").textContent=tr("title");$("t-sub").textContent=tr("sub");$("q").placeholder=tr("search");$("t-admin").textContent="🔐 "+tr("admin");$("t-foot").textContent=tr("foot");$("cb-open").textContent=tr("cart");
+ $("lang").innerHTML=["ar","en","fr"].map(l=>`<button class="${l===lang?"on":""}" data-l="${l}">${l.toUpperCase()}</button>`).join("");
+ const h=S.settings.hotline||"17205";$("hot").textContent="📞 "+h;$("hot").href="tel:"+h;
+ const st=$("status"),s=S.settings.status;
+ st.className="status "+s+(s==="open"?" hidden":"");st.textContent=s==="closed"?tr("closed"):s==="busy"?tr("busy"):"";
+ const p=$("promo");p.classList.toggle("hidden",!(S.settings.promoActive&&S.settings.promoText));$("promo-t").textContent=S.settings.promoText||"";
 }
-window.upd=(id,f,v)=>{const i=S.items.find(x=>x.id===id);if(!i)return;i[f]=f==="ar"?v:(v===""?null:Number(v));if(f==="ar"&&!i.en)i.en=v;persist()};
-window.tog=id=>{const i=S.items.find(x=>x.id===id);i.available=!i.available;persist()};
-window.del=id=>{if(confirm("حذف الصنف؟")){S.items=S.items.filter(x=>x.id!==id);persist()}};
-window.cedit=(k,f,v)=>{S.categories[k][f]=v;if(f==="en")S.categories[k].fr=S.categories[k].fr||v;persist()};
-window.cmove=(k,d)=>{const j=k+d;if(j<0||j>=S.categories.length)return;[S.categories[k],S.categories[j]]=[S.categories[j],S.categories[k]];persist()};
-window.cdel=k=>{const c=S.categories[k];if(S.items.some(i=>i.cat===c.id))return toast("⚠️ انقل أو احذف أصناف القسم أولاً");if(confirm("حذف القسم؟")){S.categories.splice(k,1);persist()}};
-$("s").oninput=renderAll;
-$("n-go").onclick=()=>{const ar=$("n-ar").value.trim(),p1=Number($("n-p1").value);if(!ar||!p1)return toast("⚠️ الاسم والسعر مطلوبان");const en=$("n-en").value.trim()||ar;
- S.items.unshift({id:"i_"+Date.now(),cat:$("n-cat").value,ar,en,fr:$("n-fr").value.trim()||en,descAr:$("n-d").value.trim(),descEn:"",p1,p2:Number($("n-p2").value)||null,img:"",available:true});["n-ar","n-en","n-fr","n-d","n-p1","n-p2"].forEach(i=>$(i).value="");persist("✅ تمت إضافة الصنف")};
-$("c-go").onclick=()=>{const ar=$("c-ar").value.trim();if(!ar)return;const en=$("c-en").value.trim()||ar;S.categories.push({id:"c_"+Date.now(),ar,en,fr:en,img:"logo.jpg",s1:"",s2:""});$("c-ar").value=$("c-en").value="";persist()};
-$("z-go").onclick=()=>{const ar=$("z-ar").value.trim();if(!ar)return;S.zones.push({id:"z_"+Date.now(),ar,en:ar,fee:Number($("z-fee").value)||0});$("z-ar").value=$("z-fee").value="";persist()};
-$("b-go").onclick=()=>{const ar=$("b-ar").value.trim();if(!ar)return;S.branches.push({id:"b_"+Date.now(),ar,phone:$("b-ph").value,address:$("b-ad").value,map:$("b-mp").value});["b-ar","b-ph","b-ad","b-mp"].forEach(i=>$(i).value="");persist()};
-$("sv").onclick=()=>{Object.assign(S.settings,{status:$("st").value,orderWhatsapp:$("wa").value.trim(),hotline:$("hl").value.trim(),promoActive:$("pa").value==="true",promoText:$("pt").value.trim()});persist("✅ تم حفظ الإعدادات")};
-$("rs").onclick=()=>{if(confirm("استعادة المنيو الافتراضي؟ ستُفقد التعديلات.")){S=JSON.parse(JSON.stringify(DEFAULT_DATA));persist()}};
-$("ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:"application/json"}));a.download="uncle-samir-backup-"+new Date().toISOString().slice(0,10)+".json";a.click()};
-$("im").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.items||!d.categories)throw 0;S=d;persist("✅ تم الاستيراد")}catch(x){toast("❌ ملف غير صالح")}};r.readAsText(f)};
-</script></body></html>
+function card(i,c){
+ const off=!i.available||S.settings.status==="closed";
+ const btn=(n,p)=>`<button class="pbtn" ${off?"disabled":""} data-add="${i.id}" data-s="${n}"><span>${n&&sz(c,n)?sz(c,n)+" ":""}${p} ${tr("cur")}</span><b>+</b></button>`;
+ return `<div class="card ${i.available?"":"off"}"><h3>${esc(nm(i))}</h3><p>${esc(lang==="ar"?i.descAr:(i.descEn||i.descAr))}</p>
+ ${i.available?"":`<span class="muted-text">⛔ ${tr("na")}</span>`}
+ <div class="prices">${i.p2?btn(1,i.p1)+btn(2,i.p2):btn(0,i.p1)}</div></div>`;
+}
+function render(){
+ chrome();
+ const q=qtext.toLowerCase();let chips="",html="";
+ S.categories.forEach(c=>{
+  const its=S.items.filter(i=>i.cat===c.id&&(!q||(i.ar+" "+(i.en||"")).toLowerCase().includes(q)));
+  if(!its.length)return;
+  chips+=`<button class="chip" data-go="${c.id}">${esc(nm(c))}</button>`;
+  html+=`<div class="cat-head" id="c-${c.id}"><img src="${c.img||"logo.jpg"}" alt=""><h2>${esc(nm(c))}</h2></div>`;
+  if(c.id==="roka")html+=`<div class="roka"><img src="haga_roka.jpg" alt=""><div><h3>${tr("rokaT")}</h3><p>${tr("roka")}</p></div></div><div style="height:12px"></div>`;
+  html+=`<div class="grid">${its.map(i=>card(i,c)).join("")}</div>`;
+ });
+ $("chips").innerHTML=chips;$("menu").innerHTML=html;cartBar();
+}
+const cartKey=(id,s)=>id+"|"+s;
+const lines=()=>Object.entries(cart).map(([k,qty])=>{const [id,s]=k.split("|");const i=S.items.find(x=>x.id===id);if(!i)return null;const c=S.categories.find(x=>x.id===i.cat);const price=s==="2"?i.p2:i.p1;return{k,i,c,s,qty,price,name:nm(i)+(s!=="0"&&sz(c,s)?" ("+sz(c,s)+")":"")}}).filter(Boolean);
+const sub=()=>lines().reduce((a,l)=>a+l.price*l.qty,0);
+function cartBar(){const n=lines().reduce((a,l)=>a+l.qty,0);$("cartbar").classList.toggle("hidden",!n);$("cb-n").textContent=n+" "+tr("items");$("cb-t").textContent=sub()+" "+tr("cur")}
+let lastTap=0;
+document.addEventListener("click",e=>{
+ const a=e.target.closest("[data-add]");
+ if(a){const now=Date.now();if(now-lastTap<450)return;lastTap=now;const k=cartKey(a.dataset.add,a.dataset.s);cart[k]=(cart[k]||0)+1;cartBar();toast("✓ "+tr("add"));return}
+ const g=e.target.closest("[data-go]");if(g){$("c-"+g.dataset.go).scrollIntoView();return}
+ const l=e.target.closest("[data-l]");if(l){lang=l.dataset.l;localStorage.setItem("us_lang",lang);render();return}
+ const qb=e.target.closest("[data-q]");if(qb){const k=qb.dataset.k;cart[k]=(cart[k]||0)+Number(qb.dataset.q);if(cart[k]<=0)delete cart[k];openCart();cartBar();return}
+ const ty=e.target.closest("[data-type]");if(ty){type=ty.dataset.type;openCart(true);return}
+ if(e.target.id==="dbg"||e.target.id==="x")$("dbg").classList.add("hidden");
+});
+$("q").addEventListener("input",e=>{qtext=e.target.value.trim();render()});
+$("cb-open").onclick=()=>openCart();
+let form={};
+function keep(){["f-name","f-phone","f-zone","f-addr","f-table","f-note"].forEach(id=>{const el=$(id);if(el)form[id]=el.value})}
+function openCart(keepForm){
+ if(keepForm)keep();
+ const ls=lines();const d=$("drawer");
+ if(!ls.length){d.innerHTML=`<h2>${tr("cart_t")}</h2><p class="muted-text">${tr("empty")}</p><button class="btn-dark-red" id="x">${tr("close")}</button>`;$("dbg").classList.remove("hidden");return}
+ const fee=type==="delivery"?(Number((S.zones.find(z=>z.id===form["f-zone"])||{}).fee)||0):0;
+ d.innerHTML=`<h2>🛒 ${tr("cart_t")}</h2>
+ ${ls.map(l=>`<div class="line"><div><b>${esc(l.name)}</b><div class="muted-text">${l.price} ${tr("cur")}</div></div><div class="qty"><button data-q="-1" data-k="${l.k}">−</button><b>${l.qty}</b><button data-q="1" data-k="${l.k}">+</button></div></div>`).join("")}
+ <div class="seg">${["delivery","pickup","dine"].map(t=>`<button data-type="${t}" class="${t===type?"on":""}">${tr(t)}</button>`).join("")}</div>
+ <div class="form-grid-2">
+  <div><label>${tr("name")} *</label><input id="f-name" class="form-input" value="${esc(form["f-name"])}"></div>
+  <div><label>${tr("phone")} *</label><input id="f-phone" type="tel" class="form-input" value="${esc(form["f-phone"])}"></div>
+  ${type==="delivery"?`<div><label>${tr("zone")} *</label><select id="f-zone" class="form-input"><option value="">—</option>${S.zones.map(z=>`<option value="${z.id}" ${form["f-zone"]===z.id?"selected":""}>${esc(lang==="ar"?z.ar:(z.en||z.ar))} (${z.fee} ${tr("cur")})</option>`).join("")}</select></div><div><label>${tr("addr")} *</label><input id="f-addr" class="form-input" value="${esc(form["f-addr"])}"></div>`:""}
+  ${type==="dine"?`<div><label>${tr("table")} *</label><input id="f-table" class="form-input" value="${esc(form["f-table"])}"></div>`:""}
+ </div>
+ <div class="mt-2"><label>${tr("note")}</label><input id="f-note" class="form-input" value="${esc(form["f-note"])}"></div>
+ <div class="line"><span>${tr("sub_t")}</span><b>${sub()} ${tr("cur")}</b></div>
+ ${type==="delivery"?`<div class="line"><span>${tr("fee")}</span><b>${fee} ${tr("cur")}</b></div>`:""}
+ <div class="total"><span>${tr("total")}</span><span>${sub()+fee} ${tr("cur")}</span></div>
+ <button class="btn-primary" style="width:100%" id="send">${tr("send")}</button>
+ <button class="btn-text-danger" id="x" style="width:100%;margin-top:8px">${tr("close")}</button>`;
+ $("dbg").classList.remove("hidden");
+ const z=$("f-zone");if(z)z.onchange=()=>openCart(true);
+ $("send").onclick=send;
+}
+let sending=false;
+function send(){
+ if(sending)return;keep();
+ const g=k=>(form[k]||"").trim();
+ if(S.settings.status==="closed")return toast(tr("closed"));
+ if(!g("f-name")||!g("f-phone")||(type==="delivery"&&(!g("f-zone")||!g("f-addr")))||(type==="dine"&&!g("f-table")))return toast(tr("need"));
+ sending=true;setTimeout(()=>sending=false,4000);
+ const ls=lines(),z=S.zones.find(z=>z.id===g("f-zone")),fee=type==="delivery"&&z?Number(z.fee)||0:0,total=sub()+fee;
+ const id="US"+Date.now().toString().slice(-7);
+ const typeAr={delivery:"توصيل للمنزل",pickup:"استلام من الفرع",dine:"داخل المطعم"}[type];
+ let m=`🛎️ *طلب جديد ${id} - عم سمير بتاع الفطير*\n\n`+ls.map(l=>`• ${l.i.ar}${l.s!=="0"&&l.c["s"+l.s]?" ("+l.c["s"+l.s]+")":""} ×${l.qty} = ${l.price*l.qty} ج.م`).join("\n")+`\n\n📦 النوع: ${typeAr}\n👤 ${g("f-name")}\n📞 ${g("f-phone")}`;
+ if(type==="delivery")m+=`\n📍 ${z.ar}\n🏠 ${g("f-addr")}\n🛵 التوصيل: ${fee} ج.م`;
+ if(type==="dine")m+=`\n🪑 طاولة: ${g("f-table")}`;
+ if(g("f-note"))m+=`\n📝 ${g("f-note")}`;
+ m+=`\n\n💰 *الإجمالي: ${total} ج.م*`;
+ window.saveOrder&&window.saveOrder({id,customer:g("f-name"),phone:g("f-phone"),type:typeAr,date:new Date().toLocaleString("ar-EG"),ts:Date.now(),items:ls.map(l=>({name:l.i.ar,qty:l.qty})),total});
+ window.open("https://wa.me/"+(S.settings.orderWhatsapp||"201124349186")+"?text="+encodeURIComponent(m),"_blank");
+ cart={};form={};$("dbg").classList.add("hidden");cartBar();
+}
+render();
+</script>
+</body></html>
