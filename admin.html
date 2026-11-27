@@ -182,17 +182,15 @@
   </header>
 
   <main class="container">
-    <!-- Login Screen -->
     <div id="login-screen" class="login-box">
       <img src="avatar.jpg" alt="عم سمير" />
       <h3 style="color:var(--primary-red); margin-bottom:6px;">دخول لوحة التحكم</h3>
       <p class="muted-text" style="margin-bottom:16px;">أدخل البريد الإلكتروني وكلمة المرور لإدارة الأصناف والأسعار والطلبات</p>
-      <input type="email" id="admin-email-input" class="form-input" placeholder="البريد الإلكتروني (admin@UncleSamir.com)" style="text-align:center; margin-bottom:10px;" autocomplete="username" />
-      <input type="password" id="admin-pass-input" class="form-input" placeholder="كلمة المرور (asd@123)" style="text-align:center; margin-bottom:12px;" autocomplete="current-password" />
+      <input type="email" id="admin-email-input" class="form-input" placeholder="admin@UncleSamir.com" style="text-align:center; margin-bottom:10px;" autocomplete="username" />
+      <input type="password" id="admin-pass-input" class="form-input" placeholder="asd@123" style="text-align:center; margin-bottom:12px;" autocomplete="current-password" />
       <button type="button" id="login-submit-btn" class="btn-primary" style="width:100%;">دخول الإدارة ←</button>
     </div>
 
-    <!-- Dashboard Content -->
     <div id="dashboard-screen" class="hidden">
       <div class="stats-grid" style="margin-top:20px;">
         <div class="stat-box">
@@ -221,7 +219,6 @@
         <button type="button" class="admin-tab" data-tab="orders">📋 سجل الطلبات</button>
       </div>
 
-      <!-- Tab: Items -->
       <section id="tab-items" class="panel-card">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
           <h3 style="margin:0;">تعديل الأسعار وتوفر الأصناف</h3>
@@ -230,7 +227,6 @@
         <div id="admin-items-list"></div>
       </section>
 
-      <!-- Tab: Add Item -->
       <section id="tab-add-item" class="panel-card hidden">
         <h3>➕ إضافة صنف جديد للمنيو</h3>
         <div class="form-grid-2">
@@ -272,7 +268,6 @@
         <button type="button" id="add-new-item-btn" class="btn-primary mt-2">حفظ ونشر الصنف فوراً ✓</button>
       </section>
 
-      <!-- Tab: Zones -->
       <section id="tab-zones" class="panel-card hidden">
         <h3>🛵 إدارة مناطق وأسعار التوصيل</h3>
         <div class="form-grid-2" style="margin-bottom:16px;">
@@ -285,7 +280,6 @@
         <div id="admin-zones-list"></div>
       </section>
 
-      <!-- Tab: Settings -->
       <section id="tab-settings" class="panel-card hidden">
         <h3>⚙️ إعدادات المطعم والبانر الترويجي</h3>
         <div class="form-grid-2">
@@ -323,7 +317,6 @@
         </div>
       </section>
 
-      <!-- Tab: Orders -->
       <section id="tab-orders" class="panel-card hidden">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <h3 style="margin:0;">📋 سجل الطلبات الواردة</h3>
@@ -421,7 +414,6 @@
       renderAllAdmin();
     };
 
-    // Auth
     const loginScreen = document.getElementById("login-screen");
     const dashScreen = document.getElementById("dashboard-screen");
     const logoutBtn = document.getElementById("logout-btn");
@@ -459,7 +451,6 @@
       location.reload();
     });
 
-    // Tabs
     document.querySelectorAll(".admin-tab").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".admin-tab").forEach(b => b.classList.remove("active"));
