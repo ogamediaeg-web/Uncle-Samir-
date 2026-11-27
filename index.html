@@ -3,256 +3,341 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>عم سمير بتاع الفطير | المنيو الإلكتروني</title>
+  <title>لوحة تحكم الإدارة | عم سمير بتاع الفطير</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    body { padding-bottom: 40px; }
+    .admin-topbar {
+      background: #2c1810;
+      color: #fff;
+      padding: 14px 0;
+      border-bottom: 4px solid var(--gold);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+    .admin-topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .admin-brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+    }
+    .sync-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 132, 73, 0.25);
+      border: 1px solid #2ecc71;
+      color: #a9dfbf;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .login-box {
+      max-width: 420px;
+      margin: 70px auto;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 22px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .login-box img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid var(--primary-red);
+      margin-bottom: 12px;
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin: 22px 0 18px;
+      padding-bottom: 4px;
+    }
+    .admin-tab {
+      border: 1.5px solid var(--border-color);
+      background: #fff;
+      color: var(--text-dark);
+      padding: 9px 18px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.2s;
+    }
+    .admin-tab.active {
+      background: var(--primary-red);
+      color: #fff;
+      border-color: var(--primary-red);
+    }
+    .panel-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-color);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+    .panel-card h3 {
+      color: var(--primary-red);
+      margin-bottom: 14px;
+      font-size: 1.2rem;
+    }
+    .admin-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .admin-row-inputs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .mini-input {
+      width: 95px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border-color);
+      font-family: inherit;
+      font-weight: 700;
+      text-align: center;
+    }
+    .switch-btn {
+      padding: 7px 14px;
+      border-radius: 9px;
+      border: none;
+      font-family: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .switch-btn.on { background: #1e8449; color: #fff; }
+    .switch-btn.off { background: #c0392b; color: #fff; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .stat-box {
+      background: #fff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-box strong {
+      display: block;
+      font-size: 1.5rem;
+      color: var(--primary-red);
+    }
+  </style>
 </head>
 <body>
   <div class="page-bg" style="background-image: url('bg_shop.jpg');"></div>
   <div class="page-bg-overlay"></div>
 
-  <div id="promo-banner" class="promo-banner hidden">
-    <span id="promo-text"></span>
-  </div>
-
-  <div id="status-banner" class="status-banner hidden">
-    <span id="status-text"></span>
-  </div>
-
-  <header class="main-header">
-    <div class="container header-inner">
-      <div class="brand-box">
-        <img src="logo.jpg" alt="عم سمير بتاع الفطير" class="header-logo" />
-        <div class="brand-titles">
-          <h1 data-i18n="brandName">عم سمير بتاع الفطير</h1>
-          <span class="hotline-badge">📞 <span data-i18n="hotlineLabel">الخط الساخن:</span> <strong id="header-hotline">17205</strong></span>
+  <header class="admin-topbar">
+    <div class="container admin-topbar-inner">
+      <div class="admin-brand">
+        <img src="../logo.jpg" alt="عم سمير" />
+        <div>
+          <h2 style="font-size:1.15rem; margin:0;">لوحة تحكم الإدارة • عم سمير بتاع الفطير</h2>
+          <span id="cloud-status-badge" class="sync-pill">🟢 متصل بالسحابة (تحديث لحظي للمنيو)</span>
         </div>
       </div>
-
-      <div class="header-actions">
-        <div class="lang-switcher" role="group" aria-label="Language Switcher">
-          <button type="button" class="lang-btn active" data-lang="ar">عربي</button>
-          <button type="button" class="lang-btn" data-lang="en">EN</button>
-          <button type="button" class="lang-btn" data-lang="fr">FR</button>
-        </div>
-
-        <button type="button" id="header-cart-btn" class="btn-primary cart-trigger">
-          <span>🛒</span>
-          <span data-i18n="cartBtn">السلة</span>
-          <span id="header-cart-count" class="badge-count">0</span>
-        </button>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="../index.html" target="_blank" class="btn-gold">👁️ معاينة المنيو</a>
+        <button type="button" id="logout-btn" class="btn-dark-red hidden">تسجيل خروج</button>
       </div>
     </div>
   </header>
 
-  <section class="hero-section">
-    <div class="container hero-card">
-      <div class="hero-content">
-        <span class="hero-tag" data-i18n="heroTag">رقم واحد في مصر • سمنة بلدي 100%</span>
-        <h2 data-i18n="heroTitle">أصل الفطير الشرقي والمشلتت الفلاحي على أصوله</h2>
-        <p data-i18n="heroSubtitle">فطير مورق بالسمنة البلدي، حشوات غنية من اختراعات عم سمير، وفطير حلو يدوّب القلب. اطلب دلوقتي ويوصلك سخن طازة!</p>
-        <div class="hero-btns">
-          <a href="#menu-section" class="btn-gold btn-lg" data-i18n="orderNowBtn">اطلب دلوقتي ←</a>
-          <a id="hero-call-btn" href="tel:17205" class="btn-dark-red btn-lg">📞 17205</a>
+  <main class="container">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-box">
+      <img src="../avatar.jpg" alt="عم سمير" />
+      <h3 style="color:var(--primary-red); margin-bottom:6px;">دخول لوحة التحكم</h3>
+      <p class="muted-text" style="margin-bottom:16px;">أدخل البريد الإلكتروني وكلمة المرور لإدارة الأصناف والأسعار والطلبات</p>
+      <input type="email" id="admin-email-input" class="form-input" placeholder="البريد الإلكتروني (admin@UncleSamir.com)" style="text-align:center; margin-bottom:10px;" autocomplete="username" />
+      <input type="password" id="admin-pass-input" class="form-input" placeholder="كلمة المرور (asd@123)" style="text-align:center; margin-bottom:12px;" autocomplete="current-password" />
+      <button type="button" id="login-submit-btn" class="btn-primary" style="width:100%;">دخول الإدارة ←</button>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="dashboard-screen" class="hidden">
+      <div class="stats-grid" style="margin-top:20px;">
+        <div class="stat-box">
+          <span class="muted-text">إجمالي الأصناف</span>
+          <strong id="stat-items-count">0</strong>
+        </div>
+        <div class="stat-box">
+          <span class="muted-text">الأصناف المتاحة</span>
+          <strong id="stat-avail-count">0</strong>
+        </div>
+        <div class="stat-box">
+          <span class="muted-text">مناطق التوصيل</span>
+          <strong id="stat-zones-count">0</strong>
+        </div>
+        <div class="stat-box">
+          <span class="muted-text">الطلبات المسجلة</span>
+          <strong id="stat-orders-count">0</strong>
         </div>
       </div>
-      <div class="hero-visual">
-        <img src="logo.jpg" alt="شعار عم سمير بتاع الفطير" class="hero-main-logo" />
-      </div>
-    </div>
-  </section>
 
-  <section id="menu-section" class="sticky-nav-wrapper">
-    <div class="container">
-      <div class="search-bar-box">
-        <input type="text" id="menu-search" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث عن فطيرتك المفضلة (سجق كيري، مشلتت، نوتيلا...)" />
-        <span class="search-icon">🔍</span>
+      <div class="admin-tabs">
+        <button type="button" class="admin-tab active" data-tab="items">🍽️ الأصناف والأسعار</button>
+        <button type="button" class="admin-tab" data-tab="add-item">➕ إضافة صنف جديد</button>
+        <button type="button" class="admin-tab" data-tab="zones">🛵 مناطق التوصيل</button>
+        <button type="button" class="admin-tab" data-tab="settings">⚙️ حالة المطعم والإعدادات</button>
+        <button type="button" class="admin-tab" data-tab="orders">📋 سجل الطلبات</button>
       </div>
-      <nav id="category-tabs" class="category-tabs" aria-label="Menu Categories"></nav>
-    </div>
-  </section>
 
-  <main class="container menu-container">
-    <div id="menu-sections-wrapper"></div>
+      <!-- Tab: Items -->
+      <section id="tab-items" class="panel-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+          <h3 style="margin:0;">تعديل الأسعار وتوفر الأصناف</h3>
+          <input type="text" id="admin-item-search" class="form-input" placeholder="ابحث عن صنف للتعديل..." style="max-width:280px;" />
+        </div>
+        <div id="admin-items-list"></div>
+      </section>
+
+      <!-- Tab: Add Item -->
+      <section id="tab-add-item" class="panel-card hidden">
+        <h3>➕ إضافة صنف جديد للمنيو</h3>
+        <div class="form-grid-2">
+          <div>
+            <label>القسم *</label>
+            <select id="new-item-cat" class="form-input"></select>
+          </div>
+          <div>
+            <label>اسم الصنف بالعربي *</label>
+            <input type="text" id="new-item-ar" class="form-input" placeholder="مثال: فطير مشلتت بالقشطة" />
+          </div>
+          <div>
+            <label>اسم الصنف بالإنجليزي</label>
+            <input type="text" id="new-item-en" class="form-input" placeholder="e.g. Cream Meshaltet" />
+          </div>
+          <div>
+            <label>الوصف المختصر</label>
+            <input type="text" id="new-item-desc" class="form-input" placeholder="مكونات الفطيرة..." />
+          </div>
+          <div>
+            <label>السعر الأساسي / الوسط (ج.م) *</label>
+            <input type="number" id="new-item-p1" class="form-input" placeholder="200" />
+          </div>
+          <div>
+            <label>سعر الكبير (اختياري - اتركه فارغاً لو سعر واحد)</label>
+            <input type="number" id="new-item-p2" class="form-input" placeholder="280" />
+          </div>
+          <div>
+            <label>صورة الصنف</label>
+            <select id="new-item-img" class="form-input">
+              <option value="savory_feteer.jpg">صورة فطير حادق (savory_feteer.jpg)</option>
+              <option value="sweet_feteer.jpg">صورة فطير حلو (sweet_feteer.jpg)</option>
+              <option value="meshaltet.jpg">صورة فطير مشلتت (meshaltet.jpg)</option>
+              <option value="haga_roka.jpg">صورة الحاجة روقة (haga_roka.jpg)</option>
+              <option value="logo.jpg">لوجو عم سمير (logo.jpg)</option>
+            </select>
+          </div>
+        </div>
+        <button type="button" id="add-new-item-btn" class="btn-primary mt-2">حفظ ونشر الصنف فوراً ✓</button>
+      </section>
+
+      <!-- Tab: Zones -->
+      <section id="tab-zones" class="panel-card hidden">
+        <h3>🛵 إدارة مناطق وأسعار التوصيل</h3>
+        <div class="form-grid-2" style="margin-bottom:16px;">
+          <input type="text" id="new-zone-ar" class="form-input" placeholder="اسم المنطقة بالعربي (مثال: المعادي)" />
+          <div style="display:flex; gap:8px;">
+            <input type="number" id="new-zone-fee" class="form-input" placeholder="رسوم التوصيل (ج.م)" />
+            <button type="button" id="add-zone-btn" class="btn-primary">إضافة</button>
+          </div>
+        </div>
+        <div id="admin-zones-list"></div>
+      </section>
+
+      <!-- Tab: Settings -->
+      <section id="tab-settings" class="panel-card hidden">
+        <h3>⚙️ إعدادات المطعم والبانر الترويجي</h3>
+        <div class="form-grid-2">
+          <div>
+            <label>حالة استقبال الطلبات الآن</label>
+            <select id="set-status" class="form-input">
+              <option value="open">🟢 مفتوح ويستقبل الطلبات بشكل طبيعي</option>
+              <option value="busy">🟠 ضغط طلبات (تأخير بسيط في التوصيل)</option>
+              <option value="closed">🔴 مغلق مؤقتاً (إيقاف الطلبات)</option>
+            </select>
+          </div>
+          <div>
+            <label>رقم واتساب استقبال الطلبات (بصيغة دولية بدون +)</label>
+            <input type="text" id="set-whatsapp" class="form-input" placeholder="201124349186" />
+          </div>
+          <div>
+            <label>الخط الساخن</label>
+            <input type="text" id="set-hotline" class="form-input" placeholder="17205" />
+          </div>
+          <div>
+            <label>تفعيل الشريط الإعلاني المتحرك أعلى المنيو</label>
+            <select id="set-promo-active" class="form-input">
+              <option value="true">مُفعّل (يظهر للعملاء)</option>
+              <option value="false">مخفي</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-2">
+          <label>نص الشريط الإعلاني / العرض الحالي</label>
+          <input type="text" id="set-promo-text" class="form-input" />
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+          <button type="button" id="save-settings-btn" class="btn-primary">💾 حفظ الإعدادات ونشرها</button>
+          <button type="button" id="reset-default-btn" class="btn-dark-red">🔄 استعادة المنيو الافتراضي</button>
+        </div>
+      </section>
+
+      <!-- Tab: Orders -->
+      <section id="tab-orders" class="panel-card hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="margin:0;">📋 سجل الطلبات الواردة</h3>
+          <button type="button" id="clear-orders-btn" class="btn-text-danger">مسح السجل</button>
+        </div>
+        <div id="admin-orders-list"></div>
+      </section>
+    </div>
   </main>
-
-  <section class="container branches-section">
-    <div class="section-header">
-      <h3 data-i18n="branchesTitle">📍 فروعنا</h3>
-      <p data-i18n="branchesSubtitle">تواصل مع أقرب فرع ليك أو اطلب مباشرة</p>
-    </div>
-    <div id="branches-grid" class="branches-grid"></div>
-  </section>
-
-  <footer class="main-footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <img src="avatar.jpg" alt="عم سمير" class="footer-avatar" />
-        <div>
-          <h4 data-i18n="brandName">عم سمير بتاع الفطير</h4>
-          <p>© <span id="footer-year">2026</span> <span data-i18n="allRights">جميع الحقوق محفوظة</span> • <span id="footer-social">@UNCLESAMIR.EGY</span></p>
-        </div>
-      </div>
-
-      <div class="dev-signature" id="locked-dev-signature">
-        <p class="dev-title">تصميم وتطوير <strong>manar adel</strong></p>
-        <a href="https://wa.me/201124349186" target="_blank" rel="noopener noreferrer" class="dev-whatsapp-link" aria-label="تواصل واتساب مع المطور">
-          <svg class="wa-icon" viewBox="0 0 32 32" width="20" height="20" fill="currentColor">
-            <path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.256.59 4.46 1.71 6.402L3.2 28.8l6.582-1.726a12.74 12.74 0 0 0 6.222 1.61h.006c7.058 0 12.798-5.74 12.798-12.8 0-3.42-1.332-6.636-3.75-9.054A12.716 12.716 0 0 0 16.004 3.2zm0 23.33h-.004a10.61 10.61 0 0 1-5.408-1.48l-.388-.23-3.906 1.024 1.042-3.808-.252-.402a10.602 10.602 0 0 1-1.628-5.634c0-5.864 4.772-10.636 10.642-10.636 2.842 0 5.512 1.108 7.52 3.118a10.568 10.568 0 0 1 3.116 7.522c0 5.866-4.772 10.636-10.634 10.636zm5.834-7.966c-.32-.16-1.892-.934-2.186-1.04-.292-.106-.506-.16-.72.16-.212.32-.826 1.04-1.012 1.254-.186.212-.372.24-.692.08-.32-.16-1.35-.498-2.572-1.588-.95-.848-1.592-1.894-1.778-2.214-.186-.32-.02-.492.14-.652.144-.144.32-.372.48-.56.16-.186.212-.32.32-.532.106-.214.054-.4-.026-.56-.08-.16-.72-1.734-.986-2.374-.26-.624-.524-.54-.72-.55l-.614-.01c-.214 0-.56.08-.852.4-.294.32-1.12 1.094-1.12 2.668s1.146 3.094 1.306 3.308c.16.212 2.256 3.444 5.464 4.83.764.33 1.36.526 1.824.674.766.244 1.464.21 2.016.126.614-.092 1.892-.774 2.158-1.52.266-.746.266-1.386.186-1.52-.08-.134-.292-.214-.612-.374z"/>
-          </svg>
-          <span dir="ltr">01124349186</span>
-        </a>
-      </div>
-    </div>
-  </footer>
-
-  <div id="floating-cart-bar" class="floating-cart-bar hidden">
-    <div class="container floating-cart-inner">
-      <div class="floating-cart-info">
-        <span id="floating-cart-count" class="floating-badge">0</span>
-        <div>
-          <strong data-i18n="viewCartOrder">شوف السلة واطلب</strong>
-          <small id="floating-cart-total">0 ج.م</small>
-        </div>
-      </div>
-      <button type="button" id="floating-cart-btn" class="btn-gold" data-i18n="openCartBtn">إتمام الطلب ←</button>
-    </div>
-  </div>
-
-  <div id="product-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
-    <div class="modal-card">
-      <button type="button" class="modal-close" id="close-product-modal">✕</button>
-      <div class="modal-header-img">
-        <img id="modal-item-img" src="" alt="" />
-      </div>
-      <div class="modal-body">
-        <h3 id="modal-item-name"></h3>
-        <p id="modal-item-desc" class="muted-text"></p>
-
-        <div id="modal-variants-group" class="option-group hidden">
-          <label class="group-label" data-i18n="chooseSize">اختر الحجم / النوع:</label>
-          <div id="modal-variants-list" class="radio-grid"></div>
-        </div>
-
-        <div id="modal-dips-group" class="option-group hidden">
-          <label class="group-label"><span data-i18n="chooseDips">اختر الغموس المجاني</span> (<span id="modal-dips-limit">2</span>):</label>
-          <div id="modal-dips-list" class="checkbox-grid"></div>
-        </div>
-
-        <div id="modal-addons-group" class="option-group">
-          <label class="group-label" data-i18n="extraAddons">إضافات إضافية (اختياري):</label>
-          <div id="modal-addons-list" class="checkbox-grid"></div>
-        </div>
-
-        <div class="option-group">
-          <label class="group-label" data-i18n="itemNotes">ملاحظات على الصنف:</label>
-          <input type="text" id="modal-item-note" class="form-input" data-i18n-placeholder="notePlaceholder" placeholder="مثال: تسوية زيادة، بدون فلفل..." />
-        </div>
-
-        <div class="modal-footer-actions">
-          <div class="qty-control">
-            <button type="button" id="modal-qty-minus">−</button>
-            <span id="modal-qty-val">1</span>
-            <button type="button" id="modal-qty-plus">+</button>
-          </div>
-          <button type="button" id="modal-add-confirm" class="btn-primary flex-1">
-            <span data-i18n="addToCart">إضافة للسلة</span> • <strong id="modal-total-price">0</strong> <span data-i18n="currency">ج.م</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="cart-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
-    <div class="modal-card modal-lg">
-      <button type="button" class="modal-close" id="close-cart-modal">✕</button>
-      <div class="modal-body">
-        <div class="cart-header-row">
-          <h3 data-i18n="yourCart">🛒 سلة طلباتك</h3>
-          <button type="button" id="clear-cart-btn" class="btn-text-danger" data-i18n="clearCart">تفريغ السلة</button>
-        </div>
-
-        <div id="cart-items-list" class="cart-items-list"></div>
-
-        <div id="checkout-form-wrapper" class="checkout-section">
-          <h4 data-i18n="orderDetailsTitle">تفاصيل الاستلام والتوصيل</h4>
-
-          <div class="order-type-tabs">
-            <button type="button" class="order-type-btn active" data-type="delivery" data-i18n="typeDelivery">🛵 توصيل للمنزل</button>
-            <button type="button" class="order-type-btn" data-type="pickup" data-i18n="typePickup">🏪 استلام من الفرع</button>
-            <button type="button" class="order-type-btn" data-type="dinein" data-i18n="typeDinein">🍽️ داخل المطعم (صالة)</button>
-          </div>
-
-          <div class="form-grid-2">
-            <div>
-              <label data-i18n="custName">الاسم *</label>
-              <input type="text" id="cust-name" class="form-input" data-i18n-placeholder="custNamePh" placeholder="اكتب اسمك" />
-            </div>
-            <div>
-              <label data-i18n="custPhone">رقم الموبايل *</label>
-              <input type="tel" id="cust-phone" class="form-input" placeholder="01xxxxxxxxx" />
-            </div>
-          </div>
-
-          <div id="delivery-fields" class="conditional-fields">
-            <div class="form-grid-2">
-              <div>
-                <label data-i18n="deliveryZone">منطقة التوصيل *</label>
-                <select id="delivery-zone-select" class="form-input"></select>
-              </div>
-              <div>
-                <label data-i18n="deliveryAddress">العنوان بالتفصيل *</label>
-                <input type="text" id="cust-address" class="form-input" data-i18n-placeholder="addressPh" placeholder="الشارع، رقم العمارة، الشقة..." />
-              </div>
-            </div>
-          </div>
-
-          <div id="pickup-fields" class="conditional-fields hidden">
-            <label data-i18n="selectBranch">اختر فرع الاستلام:</label>
-            <select id="pickup-branch-select" class="form-input"></select>
-          </div>
-
-          <div id="dinein-fields" class="conditional-fields hidden">
-            <label data-i18n="tableNumber">رقم الطاولة *</label>
-            <input type="text" id="table-number" class="form-input" data-i18n-placeholder="tablePh" placeholder="مثال: طاولة 5" />
-          </div>
-
-          <div class="mt-2">
-            <label data-i18n="generalNotes">ملاحظات إضافية للطلب:</label>
-            <input type="text" id="order-notes" class="form-input" data-i18n-placeholder="generalNotesPh" placeholder="أي تعليمات إضافية..." />
-          </div>
-
-          <div class="totals-box">
-            <div class="total-row">
-              <span data-i18n="subtotal">المجموع الفرعي:</span>
-              <span id="cart-subtotal">0 ج.م</span>
-            </div>
-            <div class="total-row" id="delivery-fee-row">
-              <span data-i18n="deliveryFee">رسوم التوصيل:</span>
-              <span id="cart-delivery-fee">0 ج.م</span>
-            </div>
-            <div class="total-row grand-total">
-              <span data-i18n="grandTotal">الإجمالي النهائي:</span>
-              <span id="cart-grand-total">0 ج.م</span>
-            </div>
-          </div>
-
-          <button type="button" id="send-whatsapp-order-btn" class="btn-whatsapp-submit">
-            <span>📲</span>
-            <span data-i18n="sendWhatsappBtn">إرسال الطلب عبر واتساب الآن</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div id="toast-box" class="toast-box hidden"></div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
     import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -261,38 +346,26 @@
       projectId: "uncle-samir",
       storageBucket: "uncle-samir.firebasestorage.app",
       messagingSenderId: "426745500615",
-      appId: "1:426745500615:web:2dc8ac6fe717980eeebfe2",
-      measurementId: "G-R0X0L8XFBX"
+      appId: "1:426745500615:web:2dc8ac6fe717980eeebfe2"
     };
 
     const app = initializeApp(firebaseConfig);
-    try { getAnalytics(app); } catch (e) {}
     const db = getFirestore(app);
     const menuDocRef = doc(db, "menus", "uncle_samir_main");
 
-    window.firebaseSync = {
+    window.firebaseAdmin = {
       async saveToCloud(dataObj) {
         try {
           await setDoc(menuDocRef, { payload: JSON.stringify(dataObj), updatedAt: Date.now() }, { merge: true });
+          const badge = document.getElementById("cloud-status-badge");
+          if (badge) badge.textContent = "🟢 تم الحفظ والمزامنة لحظياً مع المنيو";
           return true;
         } catch (err) {
-          console.warn("Firestore save fallback to localStorage:", err);
+          console.error(err);
+          const badge = document.getElementById("cloud-status-badge");
+          if (badge) badge.textContent = "🟡 محفوظ محلياً (تحقق من صلاحيات Firestore)";
           return false;
         }
-      },
-      startRealtimeListener(onRemoteUpdate) {
-        try {
-          onSnapshot(menuDocRef, (snap) => {
-            if (snap.exists() && snap.data().payload) {
-              try {
-                const parsed = JSON.parse(snap.data().payload);
-                onRemoteUpdate(parsed);
-              } catch (e) {}
-            }
-          }, (err) => {
-            console.warn("Firestore listener inactive:", err);
-          });
-        } catch (e) {}
       }
     };
 
@@ -301,39 +374,275 @@
         const snap = await getDoc(menuDocRef);
         if (snap.exists() && snap.data().payload) {
           const parsed = JSON.parse(snap.data().payload);
-          if (window.onInitialCloudLoad) window.onInitialCloudLoad(parsed);
-        } else if (window.DEFAULT_DATA) {
-          await setDoc(menuDocRef, { payload: JSON.stringify(window.DEFAULT_DATA), updatedAt: Date.now() });
+          if (window.loadCloudIntoAdmin) window.loadCloudIntoAdmin(parsed);
         }
-      } catch (e) {}
-      if (window.firebaseSync.startRealtimeListener && window.onInitialCloudLoad) {
-        window.firebaseSync.startRealtimeListener((remoteData) => {
-          window.onInitialCloudLoad(remoteData);
+        onSnapshot(menuDocRef, (s) => {
+          if (s.exists() && s.data().payload && window.loadCloudIntoAdmin) {
+            window.loadCloudIntoAdmin(JSON.parse(s.data().payload));
+          }
         });
-      }
+      } catch (e) {}
     })();
   </script>
-  <script src="data.js"></script>
-  <script src="app.js"></script>
 
-<script>
-  document.addEventListener("error", function(e) {
-    const el = e.target;
-    if (el && el.tagName === "IMG") {
-      const src = el.getAttribute("src") || "";
-      if (!el.dataset.triedAlt) {
-        el.dataset.triedAlt = "1";
-        if (src.startsWith("images/")) {
-          el.src = src.replace(/^images\//, "");
-        } else {
-          el.src = "images/" + src.replace(/^\.\//, "");
-        }
-      } else if (!el.dataset.triedLogo) {
-        el.dataset.triedLogo = "1";
-        el.src = "logo.jpg";
+  <script src="../data.js"></script>
+  <script>
+    const STORAGE_KEY = "uncle_samir_menu_v1";
+    const ADMIN_EMAIL = "admin@unclesamir.com";
+    const ADMIN_PASS = "asd@123";
+    let state = (() => {
+      try {
+        const s = localStorage.getItem(STORAGE_KEY);
+        if (s) return JSON.parse(s);
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(DEFAULT_DATA));
+    })();
+
+    function showToast(msg) {
+      const box = document.getElementById("toast-box");
+      box.textContent = msg;
+      box.classList.remove("hidden");
+      clearTimeout(box._t);
+      box._t = setTimeout(() => box.classList.add("hidden"), 2500);
+    }
+
+    async function persistState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (window.firebaseAdmin) {
+        await window.firebaseAdmin.saveToCloud(state);
+      }
+      renderAllAdmin();
+    }
+
+    window.loadCloudIntoAdmin = function(remoteData) {
+      if (!remoteData || !remoteData.items) return;
+      state = remoteData;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAllAdmin();
+    };
+
+    // Auth
+    const loginScreen = document.getElementById("login-screen");
+    const dashScreen = document.getElementById("dashboard-screen");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    if (sessionStorage.getItem("uncle_samir_admin_auth") === "1") {
+      loginScreen.classList.add("hidden");
+      dashScreen.classList.remove("hidden");
+      logoutBtn.classList.remove("hidden");
+    }
+
+    function attemptLogin() {
+      const emailVal = document.getElementById("admin-email-input").value.trim().toLowerCase();
+      const passVal = document.getElementById("admin-pass-input").value;
+      if (emailVal === ADMIN_EMAIL && passVal === ADMIN_PASS) {
+        sessionStorage.setItem("uncle_samir_admin_auth", "1");
+        loginScreen.classList.add("hidden");
+        dashScreen.classList.remove("hidden");
+        logoutBtn.classList.remove("hidden");
+        renderAllAdmin();
+      } else {
+        showToast("❌ البريد الإلكتروني أو كلمة المرور غير صحيحة");
       }
     }
-  }, true);
-</script>
+
+    document.getElementById("login-submit-btn").addEventListener("click", attemptLogin);
+    document.getElementById("admin-pass-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") attemptLogin();
+    });
+    document.getElementById("admin-email-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") attemptLogin();
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      sessionStorage.removeItem("uncle_samir_admin_auth");
+      location.reload();
+    });
+
+    // Tabs
+    document.querySelectorAll(".admin-tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".admin-tab").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.tab;
+        ["items", "add-item", "zones", "settings", "orders"].forEach(t => {
+          document.getElementById("tab-" + t).classList.toggle("hidden", t !== target);
+        });
+      });
+    });
+
+    function renderAllAdmin() {
+      document.getElementById("stat-items-count").textContent = state.items.length;
+      document.getElementById("stat-avail-count").textContent = state.items.filter(i => i.available).length;
+      document.getElementById("stat-zones-count").textContent = state.zones.length;
+      document.getElementById("stat-orders-count").textContent = (state.orders || []).length;
+
+      const catSel = document.getElementById("new-item-cat");
+      catSel.innerHTML = state.categories.map(c => `<option value="${c.id}">${c.ar}</option>`).join("");
+
+      const q = (document.getElementById("admin-item-search").value || "").trim().toLowerCase();
+      const itemsList = document.getElementById("admin-items-list");
+      const filtered = state.items.filter(i => !q || (i.ar + " " + (i.en || "")).toLowerCase().includes(q));
+
+      itemsList.innerHTML = filtered.map(item => `
+        <div class="admin-row">
+          <div>
+            <strong>${item.ar}</strong>
+            <div class="muted-text">${state.categories.find(c => c.id === item.cat)?.ar || item.cat}</div>
+          </div>
+          <div class="admin-row-inputs">
+            <label>سعر 1: <input type="number" class="mini-input" value="${item.p1}" onchange="updateItemPrice('${item.id}', 'p1', this.value)" /></label>
+            <label>سعر 2: <input type="number" class="mini-input" value="${item.p2 || ''}" placeholder="-" onchange="updateItemPrice('${item.id}', 'p2', this.value)" /></label>
+            <button type="button" class="switch-btn ${item.available ? 'on' : 'off'}" onclick="toggleItemAvail('${item.id}')">
+              ${item.available ? 'متاح ✓' : 'نفذت الكمية ✕'}
+            </button>
+            <button type="button" class="btn-text-danger" onclick="deleteItem('${item.id}')">حذف</button>
+          </div>
+        </div>
+      `).join("");
+
+      const zonesList = document.getElementById("admin-zones-list");
+      zonesList.innerHTML = state.zones.map((z, idx) => `
+        <div class="admin-row">
+          <strong>📍 ${z.ar}</strong>
+          <div class="admin-row-inputs">
+            <input type="number" class="mini-input" value="${z.fee}" onchange="updateZoneFee(${idx}, this.value)" />
+            <span>ج.م</span>
+            <button type="button" class="btn-text-danger" onclick="deleteZone(${idx})">حذف</button>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("set-status").value = state.settings.status || "open";
+      document.getElementById("set-whatsapp").value = state.settings.orderWhatsapp || "";
+      document.getElementById("set-hotline").value = state.settings.hotline || "17205";
+      document.getElementById("set-promo-active").value = String(Boolean(state.settings.promoActive));
+      document.getElementById("set-promo-text").value = state.settings.promoText || "";
+
+      const ordersList = document.getElementById("admin-orders-list");
+      if (!state.orders || state.orders.length === 0) {
+        ordersList.innerHTML = `<p class="muted-text text-center my-3">لا توجد طلبات مسجلة بعد.</p>`;
+      } else {
+        ordersList.innerHTML = state.orders.map(o => `
+          <div class="admin-row">
+            <div>
+              <strong>${o.id} • ${o.customer} (${o.phone})</strong>
+              <div class="muted-text">${o.date} • ${o.items.map(x => x.name + ' ×' + x.qty).join('، ')}</div>
+            </div>
+            <strong class="price-tag">${o.total} ج.م</strong>
+          </div>
+        `).join("");
+      }
+    }
+
+    window.updateItemPrice = async function(id, field, val) {
+      const item = state.items.find(i => i.id === id);
+      if (!item) return;
+      item[field] = val === "" ? null : Number(val);
+      await persistState();
+      showToast("✅ تم تحديث السعر ونشره");
+    };
+
+    window.toggleItemAvail = async function(id) {
+      const item = state.items.find(i => i.id === id);
+      if (!item) return;
+      item.available = !item.available;
+      await persistState();
+      showToast(item.available ? "✅ الصنف متاح الآن" : "🔴 تم إيقاف الصنف مؤقتاً");
+    };
+
+    window.deleteItem = async function(id) {
+      if (!confirm("هل أنت متأكد من حذف هذا الصنف؟")) return;
+      state.items = state.items.filter(i => i.id !== id);
+      await persistState();
+      showToast("🗑️ تم حذف الصنف");
+    };
+
+    document.getElementById("add-new-item-btn").addEventListener("click", async () => {
+      const cat = document.getElementById("new-item-cat").value;
+      const ar = document.getElementById("new-item-ar").value.trim();
+      const en = document.getElementById("new-item-en").value.trim();
+      const descAr = document.getElementById("new-item-desc").value.trim();
+      const p1 = Number(document.getElementById("new-item-p1").value);
+      const p2Raw = document.getElementById("new-item-p2").value;
+      const img = document.getElementById("new-item-img").value;
+
+      if (!ar || !p1) {
+        showToast("⚠️ أدخل اسم الصنف والسعر الأساسي");
+        return;
+      }
+
+      state.items.unshift({
+        id: "item_" + Date.now(),
+        cat,
+        ar,
+        en: en || ar,
+        fr: en || ar,
+        descAr,
+        descEn: descAr,
+        p1,
+        p2: p2Raw ? Number(p2Raw) : null,
+        img,
+        available: true
+      });
+
+      document.getElementById("new-item-ar").value = "";
+      document.getElementById("new-item-en").value = "";
+      document.getElementById("new-item-desc").value = "";
+      document.getElementById("new-item-p1").value = "";
+      document.getElementById("new-item-p2").value = "";
+
+      await persistState();
+      showToast("✅ تمت إضافة الصنف ونشره في المنيو!");
+    });
+
+    document.getElementById("add-zone-btn").addEventListener("click", async () => {
+      const ar = document.getElementById("new-zone-ar").value.trim();
+      const fee = Number(document.getElementById("new-zone-fee").value);
+      if (!ar) return;
+      state.zones.push({ id: "z_" + Date.now(), ar, en: ar, fee: fee || 0 });
+      document.getElementById("new-zone-ar").value = "";
+      document.getElementById("new-zone-fee").value = "";
+      await persistState();
+      showToast("✅ تمت إضافة المنطقة");
+    });
+
+    window.updateZoneFee = async function(idx, val) {
+      state.zones[idx].fee = Number(val) || 0;
+      await persistState();
+      showToast("✅ تم تحديث رسوم التوصيل");
+    };
+
+    window.deleteZone = async function(idx) {
+      state.zones.splice(idx, 1);
+      await persistState();
+    };
+
+    document.getElementById("save-settings-btn").addEventListener("click", async () => {
+      state.settings.status = document.getElementById("set-status").value;
+      state.settings.orderWhatsapp = document.getElementById("set-whatsapp").value.trim();
+      state.settings.hotline = document.getElementById("set-hotline").value.trim();
+      state.settings.promoActive = document.getElementById("set-promo-active").value === "true";
+      state.settings.promoText = document.getElementById("set-promo-text").value.trim();
+      await persistState();
+      showToast("✅ تم حفظ الإعدادات وتطبيقها على المنيو فوراً");
+    });
+
+    document.getElementById("reset-default-btn").addEventListener("click", async () => {
+      if (!confirm("سيتم إعادة ضبط جميع الأصناف والأسعار للقيم الأصلية، هل أنت متأكد؟")) return;
+      state = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      await persistState();
+      showToast("🔄 تمت استعادة البيانات الافتراضية");
+    });
+
+    document.getElementById("clear-orders-btn").addEventListener("click", async () => {
+      state.orders = [];
+      await persistState();
+    });
+
+    document.getElementById("admin-item-search").addEventListener("input", renderAllAdmin);
+
+    renderAllAdmin();
+  </script>
 </body>
 </html>
